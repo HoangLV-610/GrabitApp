@@ -7,7 +7,7 @@ const { Content } = Layout;
 const UserTemplate = () => {
   // const {} = theme.useToken();
   return (
-    <Layout className="h-screen">
+    <Layout className="h-screen bg-white">
       <Header />
       <Content>
         <div
