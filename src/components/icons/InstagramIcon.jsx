@@ -1,5 +1,3 @@
-import React from "react";
-
 const InstagramIcon = ({ width, height, fill }) => {
   return (
     <svg

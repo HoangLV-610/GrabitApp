@@ -1,4 +1,4 @@
-import { Layout, theme } from "antd";
+import { Layout } from "antd";
 import Header from "../UserTemplate/components/header/Header";
 import Footer from "../UserTemplate/components/footer/Footer";
 import { Outlet } from "react-router-dom";
@@ -6,9 +6,6 @@ import Sildebar from "./component/Sidebar";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 
 const UserTemplate = () => {
-  const {
-    token: { colorBgContainer, borderRadiusLG },
-  } = theme.useToken();
   return (
     <Layout>
       <Header />
