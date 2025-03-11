@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply font-poppins;
+}
+
+.title {
+  margin-bottom: 0;
+  font-size: 25px;
+  line-height: 38px;
+  font-weight: 600;
+  color: #4b5966;
+  position: relative;
+  display: inline-block;
+  padding: 0;
+  text-transform: capitalize;
+  line-height: 1;
+  margin-bottom: 40px;
+}
+
+.text-hight-light {
+  color: #5caf90;
+  letter-spacing: 0.02rem;
+}
+
+.sub-title {
+  max-width: 400px;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #777;
+  line-height: 18px;
+  font-weight: 300;
+  display: block;
+}
+
+.banner-sale {
+  &:after {
+    content: "";
+    display: block;
+    height: 100%;
+    left: -75%;
+    position: absolute;
+    top: 0px;
+    transform: skewX(-25deg);
+    width: 50%;
+    z-index: 2;
+    background: linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.3) 100%
+    );
+    transition: all 0.5s;
+  }
+
+  &:hover::after {
+    left: 100%;
+  }
+}

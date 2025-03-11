@@ -1,0 +1,20 @@
+// Custom dots của Swiper
+.banner-main .swiper-pagination-bullet {
+  width: 15px;
+  height: 15px;
+  margin: 0 2.5px !important;
+  display: inline-block;
+  border-radius: 30px;
+  opacity: 1;
+  border: 1px solid #4b5966;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  -webkit-transition: all 0.3s ease 0s;
+  transition: all 0.3s ease 0s;
+  background-color: transparent;
+
+  &.swiper-pagination-bullet-active {
+    width: 30px;
+    background-color: #4b5966;
+  }
+}

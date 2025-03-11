@@ -1,0 +1,21 @@
+/* Ant Design */
+.ant-layout:where(.css-dev-only-do-not-override-1v613y0).ant-layout {
+  background-color: unset;
+}
+
+:where(.css-dev-only-do-not-override-1v613y0) a:hover {
+  color: unset;
+}
+:where(.css-dev-only-do-not-override-1v613y0) a {
+  cursor: pointer;
+  transition: unset;
+}
+
+.ant-layout-content {
+  min-height: max-content;
+}
+
+.text-main {
+  --tw-text-opacity: 1;
+  color: rgb(92 175 144 / var(--tw-text-opacity, 1)) !important;
+}

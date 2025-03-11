@@ -1,0 +1,58 @@
+[
+  {
+    "icon": "Citrus",
+    "title": "Fruits",
+    "quantity": 320,
+    "sale": "30",
+    "bgClass": "bg-orange-100"
+  },
+  {
+    "icon": "Croissant",
+    "title": "Bakery",
+    "quantity": 65,
+    "sale": "30",
+    "bgClass": "bg-yellow-100"
+  },
+  {
+    "icon": "Leaf",
+    "title": "Vegetables",
+    "quantity": 548,
+    "sale": "0",
+    "bgClass": "bg-green-100"
+  },
+  {
+    "icon": "Milk",
+    "title": "Dairy & Milk",
+    "quantity": 48,
+    "sale": "",
+    "bgClass": "bg-blue-100"
+  },
+  {
+    "icon": "Popcorn",
+    "title": "Snack & Spice",
+    "quantity": 100,
+    "sale": "15",
+    "bgClass": "bg-yellow-200"
+  },
+  {
+    "icon": "CupSoda",
+    "title": "Juice & Drinks",
+    "quantity": 230,
+    "sale": "10",
+    "bgClass": "bg-purple-100"
+  },
+  {
+    "icon": "Fish",
+    "title": "Seafood",
+    "quantity": 321,
+    "sale": "",
+    "bgClass": "bg-indigo-100"
+  },
+  {
+    "icon": "Egg",
+    "title": "Eggs",
+    "quantity": 94,
+    "sale": "",
+    "bgClass": "bg-yellow-200"
+  }
+]
