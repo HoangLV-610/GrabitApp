@@ -3,6 +3,10 @@
   background-color: unset;
 }
 
+:where(.css-1v613y0).ant-layout {
+  background-color: unset;
+}
+
 :where(.css-dev-only-do-not-override-1v613y0) a:hover {
   color: unset;
 }
