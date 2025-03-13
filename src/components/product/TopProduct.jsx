@@ -14,6 +14,7 @@ import { ProductContext } from "../../context/ProductContext";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import BannerSale from "../../pages/banner/BannerSale";
+import { useHandleProductDetail } from "../../utils/navigation";
 const FILTERED_GROUPS = ["Trendings", "Rated", "Selling"];
 
 const TopProduct = () => {
@@ -21,6 +22,8 @@ const TopProduct = () => {
 
   const [groups, setGroups] = useState([]);
   const [topProduct, setTopProduct] = useState([]);
+
+  // lấy danh sách sản phẩm
   useEffect(() => {
     const fetchGroupsData = async () => {
       try {
@@ -49,6 +52,10 @@ const TopProduct = () => {
 
     fetchGroupsData();
   }, [listProducts]);
+
+  // nhấn sang chi tiết sản phẩm
+  const handleProductDetail = useHandleProductDetail();
+
   return (
     <div className="grid grid-cols-12 container mx-auto space-x-[24px] py-10">
       <div className="banner col-span-3">
@@ -101,7 +108,10 @@ const TopProduct = () => {
               >
                 {products.map((product, index) => {
                   return (
-                    <SwiperSlide key={index}>
+                    <SwiperSlide
+                      key={index}
+                      onClick={() => handleProductDetail(product)}
+                    >
                       <ItemTopProduct product={product} />
                     </SwiperSlide>
                   );

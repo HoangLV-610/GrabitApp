@@ -3,6 +3,7 @@ import ImageProductDetail from "./ImageProductDetail";
 import InfoProductDetail from "./InfoProductDetail";
 import ProductsYouMayLike from "./ProductsYouMayLike";
 import ProductTabs from "./ProductTabs";
+
 const images = [
   "https://grabit-react-next.maraviyainfotech.com/assets/img/product-images/5_1.jpg",
   "https://grabit-react-next.maraviyainfotech.com/assets/img/product-images/4_1.jpg",

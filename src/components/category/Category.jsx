@@ -39,16 +39,16 @@ const Category = () => {
         loop={true} // Vòng lặp vô hạn
       >
         {categories.map((category, index) => {
-          const { title, quantity, sale } = category;
-
+          const { title, quantity, sale, bgClass, icon } = category;
           return (
             <SwiperSlide key={index}>
               <div
-                className={`category-container relative p-[15px] rounded-[5px] text-center cursor-pointer ${category.bgClass}`}
+                style={{ backgroundColor: bgClass }}
+                className={`category-container relative p-[15px] rounded-[5px] text-center cursor-pointer ${bgClass}`}
               >
                 <div className="wrap-category z-10 relative p-[15px] bg-white rounded-[5px] shadow-md">
                   <div className="icon flex justify-center mb-3">
-                    {React.cloneElement(ICONS_MAP[category.icon], {
+                    {React.cloneElement(ICONS_MAP[icon], {
                       size: 40,
                       strokeWidth: 1,
                       className: "text-main  stroke-[1]",

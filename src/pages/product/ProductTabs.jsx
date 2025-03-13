@@ -43,9 +43,7 @@ const ProductTabs = () => {
         {activeTabs === "Vendor" && (
           <TabVendor dataVendor={DataProductTabs.vendor} />
         )}
-        {activeTabs === "Reviews" && (
-          <TabReviews dataReviews={DataProductTabs.reviews} />
-        )}
+        {activeTabs === "Reviews" && <TabReviews />}
       </div>
     </div>
   );

@@ -7,8 +7,6 @@ import { useState, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const ImageProductDetail = ({ allImages }) => {
-  console.log(allImages);
-
   const [thumbsSwiper, setThumbsSwiper] = useState(null);
   const [activeIndex, setActiveIndex] = useState(0); // Lưu index ảnh hiện tại
 

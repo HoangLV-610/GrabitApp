@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 export default {
+  mode: "jit",
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
@@ -15,6 +16,15 @@ export default {
       fontFamily: {
         poppins: ["Poppins", "sans-serif"], // Thêm font Poppins
       },
+      safelist: [
+        "bg-green-100",
+        "bg-yellow-200",
+        "bg-orange-100",
+        "bg-purple-100",
+        "bg-blue-100",
+        "bg-indigo-100",
+        "bg-yellow-100",
+      ],
     },
   },
   plugins: [],
