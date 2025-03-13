@@ -5,10 +5,13 @@ export const useHandleProductDetail = () => {
   const navigate = useNavigate();
 
   return (product) => {
-    console.log(product);
-
     const serializableProduct = JSON.parse(JSON.stringify(product));
-    navigate(pathRoute.productDetail, {
+    const productDetailPath = pathRoute.productDetail.replace(
+      ":id",
+      product.id
+    );
+
+    navigate(productDetailPath, {
       state: { product: serializableProduct },
     });
   };

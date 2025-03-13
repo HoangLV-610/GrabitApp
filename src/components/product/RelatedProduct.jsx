@@ -4,10 +4,13 @@ import { ProductContext } from "../../context/ProductContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css"; // Import CSS để Swiper hoạt động
 import ItemProduct from "./ItemProduct";
+import { useHandleProductDetail } from "../../utils/navigation";
 
 const RelatedProduct = () => {
   const listProducts = useContext(ProductContext);
-  console.log(listProducts);
+
+  // nhấn sang trang chi tiết sản phẩm
+  const handleProductDetail = useHandleProductDetail();
 
   return (
     <div className="wrap-content">
@@ -23,7 +26,14 @@ const RelatedProduct = () => {
         <Swiper loop={true} spaceBetween={24} slidesPerView={5}>
           {listProducts.map((product, index) => {
             return (
-              <SwiperSlide key={index}>
+              <SwiperSlide
+                key={index}
+                onClick={(event) => {
+                  event.stopPropagation();
+                  console.log("Clicked product:", product); // Kiểm tra sản phẩm có đúng không
+                  handleProductDetail(product);
+                }}
+              >
                 <ItemProduct product={product} />
               </SwiperSlide>
             );

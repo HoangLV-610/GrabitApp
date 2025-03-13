@@ -6,6 +6,7 @@ import GmailIcon from "../../../components/icons/GmailIcon";
 
 import { pathRoute } from "../../../routes/path";
 import {
+  getUser,
   handleFacebookLogin,
   handleGoogleLogin,
   loginUser,
@@ -13,9 +14,12 @@ import {
 import { useFormik } from "formik";
 import { loginValidationSchema } from "../../../utils/validation/validationSchema";
 import { showToast } from "../../../utils/toast";
+import { loginSuccess } from "../../../redux/slice/user.slice";
+import { useDispatch } from "react-redux";
 
 const FormLogin = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -29,6 +33,9 @@ const FormLogin = () => {
 
       if (user) {
         showToast("Đăng nhập thành công!", "success");
+        // gọi hàm lấy thông tin
+        getInfoUser(user.uid);
+        // chuyển sang trang home
         navigate(pathRoute.homePage);
       } else {
         showToast("Email hoặc mật khẩu không đúng!", "error");
@@ -36,6 +43,20 @@ const FormLogin = () => {
       }
     },
   });
+
+  // hàm lấy thông tin của user khi đăng nhập thành công
+  const getInfoUser = async (id) => {
+    try {
+      const infoUser = await getUser(id);
+      if (infoUser) {
+        // lưu thông tin vào redux
+        dispatch(loginSuccess(infoUser));
+      }
+    } catch (error) {
+      console.log("Lấy thông tin thất bại", error);
+    }
+  };
+
   return (
     <form
       onSubmit={formik.handleSubmit}

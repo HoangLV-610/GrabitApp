@@ -23,6 +23,8 @@ import ItemActionHeader from "./ItemActionHeader";
 import ButtonDropDown from "../../../../components/ui/button/ButtonDropDown";
 import Input from "../../../../components/ui/input/Input";
 import { pathRoute } from "../../../../routes/path";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../../../../redux/slice/user.slice";
 
 // DATA DROPDOWN
 const listContent = [
@@ -69,65 +71,40 @@ const products = {
 };
 
 // Content Action
-const contentAction = () => {
-  const listActionsAccount = [
-    {
-      title: "Register",
-      link: pathRoute.login,
-      state: {
-        type: "register",
-      },
-    },
-    {
-      title: "Checkout",
-      link: pathRoute.checkout,
-    },
-    {
-      title: "Login",
-      link: pathRoute.login,
-      state: {
-        type: "login",
-      },
-    },
-  ];
+const contentAction = (user, handleLogout) => {
+  console.log(user); // Kiểm tra xem có bị null không
   return (
     <ul>
-      {listActionsAccount.map((item, index) => {
-        return (
-          <li key={index} className="px-5 py-[10px] text-[13px] w-full">
-            <Link
-              className="text-gray hover:text-main"
-              to={item.link}
-              state={item.state}
-            >
-              {item.title}
-            </Link>
-          </li>
-        );
-      })}
+      {(user
+        ? [
+            { title: "My Profile" },
+            { title: "Orders" },
+            { title: "Logout", onClick: handleLogout },
+          ]
+        : [
+            {
+              title: "Register",
+              link: pathRoute.login,
+              state: { type: "register" },
+            },
+            { title: "Checkout", link: pathRoute.checkout },
+            { title: "Login", link: pathRoute.login, state: { type: "login" } },
+          ]
+      ).map((item, index) => (
+        <li key={index} className="px-5 py-[10px] text-[13px] w-full">
+          <Link
+            className="text-gray hover:text-main"
+            to={item.link}
+            state={item.state}
+            onClick={item.onClick ? () => item.onClick() : undefined}
+          >
+            {item.title}
+          </Link>
+        </li>
+      ))}
     </ul>
   );
 };
-
-// Data Action Header
-const listActionsHeader = [
-  {
-    icon: <User size={24} />,
-    title: "Account",
-    subTitle: "LOGIN",
-    content: contentAction(),
-  },
-  {
-    icon: <Heart size={24} />,
-    title: "Wishlist",
-    subTitle: "3-ITEMS",
-  },
-  {
-    icon: <ShoppingCart size={24} />,
-    title: "Cart",
-    subTitle: "3-ITEMS",
-  },
-];
 
 // Item menu
 const menuItems = [
@@ -140,6 +117,31 @@ const menuItems = [
 ];
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.userSlice.user);
+  if (user) console.log(user.email);
+
+  const handleLogout = () => dispatch(logoutUser());
+  // Data Action Header
+  const listActionsHeader = [
+    {
+      icon: <User size={24} />,
+      title: "Account",
+      subTitle: "LOGIN",
+      content: contentAction(user, handleLogout),
+    },
+    {
+      icon: <Heart size={24} />,
+      title: "Wishlist",
+      subTitle: "3-ITEMS",
+    },
+    {
+      icon: <ShoppingCart size={24} />,
+      title: "Cart",
+      subTitle: "3-ITEMS",
+    },
+  ];
+
   const navigate = useNavigate();
   const [selectLocation, setSelectLocation] = useState(listContent[0]);
   const defaultCategory = "dairy_bakery"; // Key mặc định

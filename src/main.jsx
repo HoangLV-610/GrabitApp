@@ -6,16 +6,20 @@ import { ProductProvider } from "./context/ProductContext.jsx";
 import { CategoryProvider } from "./context/CategoriesContext.jsx";
 import { BrowserRouter } from "react-router";
 import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import { store } from "./redux/configStore.js";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <BrowserRouter>
-      <ProductProvider>
-        <CategoryProvider>
-          <ToastContainer />
-          <App />
-        </CategoryProvider>
-      </ProductProvider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <BrowserRouter>
+        <ProductProvider>
+          <CategoryProvider>
+            <ToastContainer />
+            <App />
+          </CategoryProvider>
+        </ProductProvider>
+      </BrowserRouter>
+    </Provider>
   </StrictMode>
 );

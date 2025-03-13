@@ -3,7 +3,7 @@ import Rating from "../../components/ui/rating/Rating";
 const ItemYouMayLike = (props) => {
   const { name, rating, old_price, price, image_main } = props.product;
   return (
-    <div className="p-[15px] border border-light-gray bg-light-gray rounded-[5px] flex my-10 group/item relative">
+    <div className="p-[15px] border border-light-gray bg-light-gray rounded-[5px] flex my-10 group/item relative cursor-pointer">
       <div className="wrap-image mr-[15px] max-w-[75px]">
         <img
           src={image_main}

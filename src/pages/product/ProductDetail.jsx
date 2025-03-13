@@ -3,6 +3,7 @@ import ImageProductDetail from "./ImageProductDetail";
 import InfoProductDetail from "./InfoProductDetail";
 import ProductsYouMayLike from "./ProductsYouMayLike";
 import ProductTabs from "./ProductTabs";
+import { useEffect } from "react";
 
 const images = [
   "https://grabit-react-next.maraviyainfotech.com/assets/img/product-images/5_1.jpg",
@@ -18,6 +19,11 @@ const ProductDetail = () => {
   const product = location.state.product;
   // tất cả ảnh
   const allImages = [product.image_main, ...images];
+
+  // Cuộn lên đầu trang mỗi khi id thay đổi
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [product.id]);
 
   return (
     <div className="wrap-content ">

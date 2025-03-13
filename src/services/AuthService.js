@@ -79,7 +79,19 @@ export const getUser = async (uid) => {
   try {
     const userDoc = await getDoc(doc(db, "users", uid));
     if (userDoc.exists()) {
-      return userDoc.data();
+      const userData = userDoc.data();
+      // Chuyển đổi createdAt nếu có
+      const infoUser = {
+        ...userData,
+        createAt: userData.createAt
+          ? userData.createAt.toDate().toISOString()
+          : userData.createAt
+          ? userData.createAt.toDate().toISOString()
+          : null,
+      };
+
+      console.log("Processed infoUser:", infoUser);
+      return infoUser;
     } else {
       console.error("User document not found!");
       return null;

@@ -6,5 +6,5 @@ export const pathRoute = {
   contactPage: "/contact",
   login: "/account",
   register: "/register",
-  productDetail: "/product-detail",
+  productDetail: "/product-detail/:id",
 };
