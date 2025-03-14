@@ -7,4 +7,6 @@ export const pathRoute = {
   login: "/account",
   register: "/register",
   productDetail: "/product-detail/:id",
+  myProfile: "/my-profile",
+  editProfile: "/eidt-profile/:id",
 };

@@ -4,7 +4,9 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { auth, db, providerFacebook, providerGoogle } from "../firebaseConfig";
-import { doc, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { showToast } from "../utils/toast";
+import { updateUser } from "../redux/slice/user.slice";
 
 // đăng nhập bằng facebook
 export const handleFacebookLogin = async () => {
@@ -89,8 +91,6 @@ export const getUser = async (uid) => {
           ? userData.createAt.toDate().toISOString()
           : null,
       };
-
-      console.log("Processed infoUser:", infoUser);
       return infoUser;
     } else {
       console.error("User document not found!");
@@ -116,5 +116,27 @@ export const getProductById = async (id) => {
   } catch (error) {
     console.error("Get product error:", error.message);
     return null;
+  }
+};
+
+// chỉnh sửa thông tin user
+export const updateMyProfile = async (dispatch, dataUpdate) => {
+  try {
+    const userCurrent = auth.currentUser;
+    if (!userCurrent) {
+      showToast("Bạn chưa đăng nhập!", "error");
+      return;
+    }
+
+    // lấy thông tin từ bảng users
+    const userRef = doc(db, "users", userCurrent.uid);
+    // update
+    await updateDoc(userRef, dataUpdate);
+    // thay đổi thông tin (redux)
+    dispatch(updateUser(dataUpdate));
+    return true;
+  } catch (error) {
+    console.log("Sửa thông tin user thất bại", error);
+    return false;
   }
 };

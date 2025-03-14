@@ -4,9 +4,12 @@ import FormLogin from "./forms/FormLogin";
 import imageForm from "../../assets/image/image-form.png";
 import { useLocation } from "react-router-dom";
 import FormRegister from "./forms/FormRegister";
+import FormEditProfile from "./forms/FormEditProfile";
 
 const Login = () => {
   const location = useLocation();
+
+  // gọi từ navigate => truyền vào state
   const { type } = location.state || {};
   const data =
     type === "register"
@@ -17,12 +20,20 @@ const Login = () => {
           subTitle: "Best place to buy and sell digital products.",
           type: "register",
         }
-      : {
+      : type === "login"
+      ? {
           titleBreadcrumb: "Login Page",
           itemBreadcrumb: "Login Page",
           titlePage: "Login",
           subTitle: "Welcome back! Please login to continue.",
           type: "login",
+        }
+      : {
+          titleBreadcrumb: "Edit Page",
+          itemBreadcrumb: "Edit Page",
+          titlePage: " Edit Profile",
+          subTitle: " Best place to buy and sell digital products.",
+          type: "edit-profile",
         };
 
   const { titleBreadcrumb, itemBreadcrumb, titlePage, subTitle } = data;
@@ -49,7 +60,11 @@ const Login = () => {
 
           <div
             className={`wrap-form w-full mx-auto flex gap-[24px] pt-10 items-start ${
-              type == "login" ? "max-w-[1000px]" : "max-w-[934px]"
+              type == "login"
+                ? "max-w-[1000px]"
+                : type == "register"
+                ? "max-w-[934px]"
+                : "max-w-[910px]"
             }`}
           >
             {type === "login" ? (
@@ -59,8 +74,10 @@ const Login = () => {
                   <img src={imageForm} alt="" className="w-full" />
                 </div>
               </>
-            ) : (
+            ) : type === "register" ? (
               <FormRegister />
+            ) : (
+              <FormEditProfile />
             )}
           </div>
         </div>

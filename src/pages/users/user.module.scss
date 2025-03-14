@@ -1,0 +1,16 @@
+.wrap-my-profile {
+  .content-profile {
+    .bg-profile {
+      .wrap-bg {
+        background-image: url("/src/assets/image/bg-my-profile.jpg");
+        min-height: 200px;
+        width: 100%;
+        margin-bottom: 30px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover; // Thêm để ảnh nền phủ toàn bộ
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+    }
+  }
+}

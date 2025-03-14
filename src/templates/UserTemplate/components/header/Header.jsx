@@ -25,6 +25,7 @@ import Input from "../../../../components/ui/input/Input";
 import { pathRoute } from "../../../../routes/path";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../redux/slice/user.slice";
+import { showToast } from "../../../../utils/toast";
 
 // DATA DROPDOWN
 const listContent = [
@@ -72,14 +73,17 @@ const products = {
 
 // Content Action
 const contentAction = (user, handleLogout) => {
-  console.log(user); // Kiểm tra xem có bị null không
   return (
     <ul>
       {(user
         ? [
-            { title: "My Profile" },
+            { title: "My Profile", link: pathRoute.myProfile },
             { title: "Orders" },
-            { title: "Logout", onClick: handleLogout },
+            {
+              title: "Logout",
+              onClick: handleLogout,
+              link: pathRoute.homePage,
+            },
           ]
         : [
             {
@@ -119,15 +123,17 @@ const menuItems = [
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice.user);
-  if (user) console.log(user.email);
 
-  const handleLogout = () => dispatch(logoutUser());
+  const handleLogout = () => {
+    showToast("Bạn đã đăng xuất", "success");
+    dispatch(logoutUser());
+  };
   // Data Action Header
   const listActionsHeader = [
     {
       icon: <User size={24} />,
       title: "Account",
-      subTitle: "LOGIN",
+      subTitle: user ? "LOGOUT" : "LOGIN",
       content: contentAction(user, handleLogout),
     },
     {

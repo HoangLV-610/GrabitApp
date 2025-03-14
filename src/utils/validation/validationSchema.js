@@ -27,3 +27,11 @@ export const loginValidationSchema = Yup.object({
     .min(6, "Password must be at least 6 characters")
     .required("Password is required"),
 });
+
+// kiểm tra khi sửa thông tin
+export const editProfileValidationSchema = Yup.object({
+  firstName: Yup.string().required("First Name is required"),
+  lastName: Yup.string().required("Last Name is required"),
+  email: Yup.string().email("Invalid email").required("Email is required"),
+  address: Yup.string().required("Address is required"),
+});

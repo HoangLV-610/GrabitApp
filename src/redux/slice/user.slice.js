@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+const userStorage = localStorage.getItem("user");
+
 const initialState = {
-  user: null,
-  isAuthenticated: false,
+  user: userStorage ? JSON.parse(userStorage) : null,
+  isAuthenticated: userStorage ? true : false,
 };
 
 const userSlice = createSlice({
@@ -15,16 +17,29 @@ const userSlice = createSlice({
       state.user = {
         ...userData,
         createdAt: userData.createdAt
-          ? userData.createdAt.toDate().toISOString() // Chuyển đổi Timestamp
+          ? new Date(userData.createdAt).toISOString() // Chuyển timestamp sang ISO nếu có
           : null,
       };
+      state.isAuthenticated = true; // Đánh dấu đã đăng nhập
+
+      localStorage.setItem("user", JSON.stringify(state.user)); // Lưu user vào localStorage
+    },
+    updateUser: (state, action) => {
+      state.user = {
+        ...state.user,
+        ...action.payload,
+      };
+
+      localStorage.setItem("users", JSON.stringify(action.payload));
     },
     logoutUser: (state) => {
-      (state.user = null), (state.isAuthenticated = false);
+      state.user = null;
+      state.isAuthenticated = false;
+      localStorage.removeItem("user"); // Xóa user khỏi localStorage
     },
   },
 });
 
-export const { loginSuccess, logoutUser } = userSlice.actions;
+export const { loginSuccess, updateUser, logoutUser } = userSlice.actions;
 
 export default userSlice.reducer;
