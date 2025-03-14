@@ -1,5 +1,6 @@
 import {
   createUserWithEmailAndPassword,
+  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
@@ -127,6 +128,19 @@ export const updateMyProfile = async (dispatch, dataUpdate) => {
       showToast("Bạn chưa đăng nhập!", "error");
       return;
     }
+    // // Nếu có email mới, gửi email xác minh trước
+    // if (dataUpdate.email && dataUpdate.email !== userCurrent.email) {
+    //   try {
+    //     // firebase bắt buộc gửi email xác minh trước
+    //     await sendEmailVerification(userCurrent);
+    //     showToast("Vui lòng kiểm tra email để xác nhận!", "info");
+    //     return false; // Chặn cập nhật, đợi người dùng xác minh email
+    //   } catch (error) {
+    //     console.log("Lỗi gửi email xác minh", error);
+    //     showToast("Không thể gửi email xác minh!", "error");
+    //     return false;
+    //   }
+    // }
 
     // lấy thông tin từ bảng users
     const userRef = doc(db, "users", userCurrent.uid);

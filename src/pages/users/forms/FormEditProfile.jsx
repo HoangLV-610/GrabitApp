@@ -91,21 +91,12 @@ const FormEditProfile = () => {
           Email*
         </label>
         <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25  ${
-            formik.touched.email && formik.errors.email
-              ? "border-error focus:ring-0 focus:ring-error"
-              : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-          }`}
+          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25 cursor-not-allowed`}
           type="email"
           placeholder="Enter your email add..."
           name="email"
           value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
         />
-        {formik.touched.email && formik.errors.email && (
-          <p className="text-error mt-2 text-sm">{formik.errors.email}</p>
-        )}
       </div>
       <div className="col-span-6">
         <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
@@ -118,9 +109,6 @@ const FormEditProfile = () => {
           name="phone"
           value={formik.values.phone}
         />
-        {formik.touched.phone && formik.errors.phone && (
-          <p className="text-error mt-2 text-sm">{formik.errors.phone}</p>
-        )}
       </div>
 
       {/* Address */}
