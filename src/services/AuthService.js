@@ -1,11 +1,17 @@
 import {
   createUserWithEmailAndPassword,
-  sendEmailVerification,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 import { auth, db, providerFacebook, providerGoogle } from "../firebaseConfig";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import {
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { showToast } from "../utils/toast";
 import { updateUser } from "../redux/slice/user.slice";
 
@@ -100,6 +106,47 @@ export const getUser = async (uid) => {
   } catch (error) {
     console.error("Error fetching user data:", error.message);
     return null;
+  }
+};
+
+// lấy tên của sản phẩm thông qua idCategory
+export const getNameCategory = async (idCategory) => {
+  try {
+    //truy vấn vào bảng categories
+    const categoriesSnapshot = await getDocs(collection(db, "categories"));
+    // lấy ra từ item của bảng categories
+    const categories = categoriesSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    const category = categories.find((item) => item.id === idCategory);
+    return category ? category.title : "Không xác định";
+  } catch (error) {
+    console.error("Lỗi khi lấy danh mục:", error);
+    return "Không xác định";
+  }
+};
+
+// lấy list sản phẩm
+export const getAllProduct = async () => {
+  try {
+    const querySnapshot = await getDocs(collection(db, "products"));
+    // Dùng `Promise.all` để đảm bảo tất cả các promise được xử lý trước khi trả về
+    const dataProduct = await Promise.all(
+      querySnapshot.docs.map(async (doc) => {
+        const categoryName = await getNameCategory(doc.data().categoryID);
+        return {
+          id: doc.id,
+          ...doc.data(),
+          nameCategory: categoryName, // Đợi lấy tên danh mục xong mới gán
+        };
+      })
+    );
+
+    return dataProduct;
+  } catch (error) {
+    console.log("Lỗi khi lấy dữ liệu Product từ Firebase", error);
+    return [];
   }
 };
 

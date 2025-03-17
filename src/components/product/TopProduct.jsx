@@ -4,24 +4,22 @@ import "swiper/css/navigation";
 import "swiper/css/grid";
 
 import bannerVertical from "../../assets/image/banner-top-product.jpg";
-
-// data product
 import { Swiper, SwiperSlide } from "swiper/react";
 import ItemTopProduct from "./ItemTopProduct";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
-import { ProductContext } from "../../context/ProductContext";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
 import BannerSale from "../../pages/banner/BannerSale";
 import { useHandleProductDetail } from "../../utils/navigation";
-const FILTERED_GROUPS = ["Trendings", "Rated", "Selling"];
+import useFetchProducts from "../../utils/useFetchProducts";
 
 const TopProduct = () => {
-  const listProducts = useContext(ProductContext);
-
+  const listProducts = useFetchProducts();
   const [groups, setGroups] = useState([]);
   const [topProduct, setTopProduct] = useState([]);
+
+  const FILTERED_GROUPS = ["Trendings", "Rated", "Selling"];
 
   // lấy danh sách sản phẩm
   useEffect(() => {

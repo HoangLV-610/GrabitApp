@@ -7,6 +7,7 @@ import { updateMyProfile } from "../../../services/AuthService";
 import { pathRoute } from "../../../routes/path";
 import { useNavigate } from "react-router-dom";
 import { showToast } from "../../../utils/toast";
+import InputForm from "../../../components/ui/input/InputForm";
 
 const FormEditProfile = () => {
   const navigate = useNavigate();
@@ -16,124 +17,88 @@ const FormEditProfile = () => {
 
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      firstName: firstName,
-      lastName: lastName,
-      email: email,
-      phone: phone,
-      address: address,
-    },
-    validationSchema: editProfileValidationSchema,
-    onSubmit: async (values) => {
-      const result = await updateMyProfile(dispatch, values);
-      if (result) {
-        showToast("Thay đổi thông tin thành công", "success");
-        navigate(pathRoute.myProfile);
-      } else {
-        showToast("Thay đổi thông tin thất bại", "error");
-        navigate(pathRoute.myProfile);
-      }
-    },
-  });
+  const { values, handleSubmit, handleChange, handleBlur, touched, errors } =
+    useFormik({
+      initialValues: {
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        address: address,
+      },
+      validationSchema: editProfileValidationSchema,
+      onSubmit: async (values) => {
+        const result = await updateMyProfile(dispatch, values);
+        if (result) {
+          showToast("Thay đổi thông tin thành công", "success");
+          navigate(pathRoute.myProfile);
+        } else {
+          showToast("Thay đổi thông tin thất bại", "error");
+          navigate(pathRoute.myProfile);
+        }
+      },
+    });
   return (
     <form
-      onSubmit={formik.handleSubmit}
+      onSubmit={handleSubmit}
       className="form-register flex-1 h-auto rounded-[5px] border border-light-gray p-[30px] grid grid-cols-12 gap-x-4 gap-y-6"
     >
-      {/* First Name & Last Name */}
-      <div className="col-span-6">
-        <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
-          First Name*
-        </label>
-        <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25  ${
-            formik.touched.email && formik.errors.email
-              ? "border-error focus:ring-0 focus:ring-error"
-              : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-          }`}
-          type="text"
-          placeholder="Enter your first name"
-          name="firstName"
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.firstName && formik.errors.firstName && (
-          <p className="text-error mt-2 text-sm">{formik.errors.firstName}</p>
-        )}
-      </div>
-      <div className="col-span-6">
-        <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
-          Last Name*
-        </label>
-        <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25  ${
-            formik.touched.lastName && formik.errors.lastName
-              ? "border-error focus:ring-0 focus:ring-error"
-              : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-          }`}
-          type="text"
-          placeholder="Enter your last name"
-          name="lastName"
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.lastName && formik.errors.lastName && (
-          <p className="text-error mt-2 text-sm">{formik.errors.lastName}</p>
-        )}
-      </div>
+      <InputForm
+        className="mb-[9px] col-span-6"
+        placeholder={"Enter your first name"}
+        lables={"First Name*"}
+        name={"firstName"}
+        value={values.firstName}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched.firstName}
+        errors={errors.emafirstNameil}
+      />
 
-      {/* Email & Phone Number */}
-      <div className="col-span-6">
-        <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
-          Email*
-        </label>
-        <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25 cursor-not-allowed`}
-          type="email"
-          placeholder="Enter your email add..."
-          name="email"
-          value={formik.values.email}
-        />
-      </div>
-      <div className="col-span-6">
-        <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
-          Phone Number*
-        </label>
-        <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25 cursor-not-allowed`}
-          type="text"
-          placeholder="Enter your phone number"
-          name="phone"
-          value={formik.values.phone}
-        />
-      </div>
+      <InputForm
+        className="mb-[9px] col-span-6"
+        placeholder={"Enter your last name"}
+        lables={"Last Name*"}
+        name={"lastName"}
+        value={values.lastName}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched.lastName}
+        errors={errors.emalastNameil}
+      />
 
-      {/* Address */}
-      <div className="col-span-12">
-        <label className="block text-slate-gray text-[15px] font-medium mb-[9px]">
-          Address
-        </label>
-        <input
-          className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25  ${
-            formik.touched.address && formik.errors.address
-              ? "border-error focus:ring-0 focus:ring-error"
-              : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-          }`}
-          type="text"
-          placeholder="Address Line 1"
-          name="address"
-          value={formik.values.address}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-        {formik.touched.address && formik.errors.address && (
-          <p className="text-error mt-2 text-sm">{formik.errors.address}</p>
-        )}
-      </div>
+      <InputForm
+        className={"mb-[9px] col-span-6"}
+        classNameInput={"cursor-not-allowed"}
+        placeholder={"Enter your email add..."}
+        lables={"Email*"}
+        name={"email"}
+        value={values.email}
+        touched={touched.email}
+        errors={errors.email}
+      />
+      <InputForm
+        className={"mb-[9px] col-span-6"}
+        classNameInput={"cursor-not-allowed"}
+        placeholder={"Enter your phone number"}
+        lables={"Phone Number*"}
+        name={"phone"}
+        value={values.phone}
+        touched={touched.phone}
+        errors={errors.phone}
+      />
 
+      <InputForm
+        className={"mb-[9px] col-span-12"}
+        placeholder={"Address Line 1"}
+        lables={"Address"}
+        name={"address"}
+        value={values.address}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched.address}
+        errors={errors.address}
+      />
       {/* Register Button */}
       <div className="col-span-12 flex justify-end items-center">
         <Button buttonType="buttonIcon" type="submit">

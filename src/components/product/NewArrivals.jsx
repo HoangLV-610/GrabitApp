@@ -4,13 +4,13 @@ import "swiper/css";
 import "swiper/css/grid";
 
 import { useContext, useState } from "react";
-import { ProductContext } from "../../context/ProductContext";
 import { CategoryContext } from "../../context/CategoriesContext";
 import ItemProduct from "./ItemProduct";
 import { useHandleProductDetail } from "../../utils/navigation";
+import useFetchProducts from "../../utils/useFetchProducts";
 
 const NewArrivals = () => {
-  const listProduct = useContext(ProductContext);
+  const listProduct = useFetchProducts();
   const { categories } = useContext(CategoryContext);
 
   // lấy ra tất cả các danh mục sản phẩm

@@ -16,6 +16,7 @@ import ProductDetail from "../pages/product/ProductDetail";
 import MyProfile from "../pages/users/MyProfile";
 
 import FormEditProfile from "../pages/users/forms/FormEditProfile";
+import Category from "../pages/Category";
 
 const useRoutesCustom = () => {
   const routes = useRoutes([
@@ -30,6 +31,10 @@ const useRoutesCustom = () => {
         {
           path: pathRoute.aboutUsPage,
           element: <AboutUs />,
+        },
+        {
+          path: pathRoute.categoryPage,
+          element: <Category />,
         },
         {
           path: pathRoute.productPage,

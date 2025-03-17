@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import SearchIcon from "../../icons/SearchIcon";
 
+// input search
 const Input = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef();

@@ -1,13 +1,11 @@
-import { useContext } from "react";
-
-import { ProductContext } from "../../context/ProductContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css"; // Import CSS để Swiper hoạt động
 import ItemProduct from "./ItemProduct";
 import { useHandleProductDetail } from "../../utils/navigation";
+import useFetchProducts from "../../utils/useFetchProducts";
 
 const RelatedProduct = () => {
-  const listProducts = useContext(ProductContext);
+  const listProducts = useFetchProducts();
 
   // nhấn sang trang chi tiết sản phẩm
   const handleProductDetail = useHandleProductDetail();

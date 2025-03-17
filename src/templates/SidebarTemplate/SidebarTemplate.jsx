@@ -2,11 +2,11 @@ import { Layout } from "antd";
 import Header from "../UserTemplate/components/header/Header";
 import Footer from "../UserTemplate/components/footer/Footer";
 import { Outlet } from "react-router-dom";
-import Sildebar from "./component/Sidebar";
+import Sidebar from "./component/Sidebar";
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
 import RelatedProduct from "../../components/product/RelatedProduct";
 
-const UserTemplate = () => {
+const SidebarTemplate = () => {
   return (
     <Layout>
       <Header />
@@ -18,7 +18,7 @@ const UserTemplate = () => {
           />
           <div className="container grid grid-cols-12 mx-auto gap-x-[24px] mb-10">
             <div className="sidebar-container col-span-3">
-              <Sildebar />
+              <Sidebar />
             </div>
             <div className="content-container col-span-9">
               <Outlet />
@@ -33,4 +33,4 @@ const UserTemplate = () => {
     </Layout>
   );
 };
-export default UserTemplate;
+export default SidebarTemplate;

@@ -2,15 +2,18 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../firebaseConfig";
-import { ProductContext } from "../../context/ProductContext";
+
 import ItemProduct from "./ItemProduct";
 import { useHandleProductDetail } from "../../utils/navigation";
+import useFetchProducts from "../../utils/useFetchProducts";
 
 const ProductDeal = () => {
-  const listProducts = useContext(ProductContext);
+  // lấy danh sách sản phẩm
+  const listProducts = useFetchProducts();
+
   const [productDeals, setProductDeals] = useState([]);
 
   // lấy danh sách sản phẩm deals

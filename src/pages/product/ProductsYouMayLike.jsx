@@ -1,16 +1,15 @@
-import { useContext } from "react";
-import { ProductContext } from "../../context/ProductContext";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
 import ItemYouMayLike from "./ItemYouMayLike";
 import { useHandleProductDetail } from "../../utils/navigation";
+import useFetchProducts from "../../utils/useFetchProducts";
 
 const ProductsYouMayLike = ({ categoryID }) => {
-  const listProducts = useContext(ProductContext);
+  const listProducts = useFetchProducts();
   // lấy ra danh sách product có cùng category
   const listProductYouMayLike = listProducts.filter(
-    (item) => (item.categoryID = categoryID)
+    (item) => item.categoryID == categoryID
   );
 
   // nhấn qua trang chi tiết sản phẩm

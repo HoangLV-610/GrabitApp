@@ -16,33 +16,34 @@ import { loginValidationSchema } from "../../../utils/validation/validationSchem
 import { showToast } from "../../../utils/toast";
 import { loginSuccess } from "../../../redux/slice/user.slice";
 import { useDispatch } from "react-redux";
+import InputForm from "../../../components/ui/input/InputForm";
 
 const FormLogin = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema: loginValidationSchema,
-    // nhấn nút đăng nhập
-    onSubmit: async (values) => {
-      const user = await loginUser(values.email, values.password);
+  const { values, handleSubmit, handleChange, handleBlur, touched, errors } =
+    useFormik({
+      initialValues: {
+        email: "",
+        password: "",
+      },
+      validationSchema: loginValidationSchema,
+      onSubmit: async (values) => {
+        const user = await loginUser(values.email, values.password);
 
-      if (user) {
-        showToast("Đăng nhập thành công!", "success");
-        // gọi hàm lấy thông tin
-        getInfoUser(user.uid);
-        // chuyển sang trang home
-        navigate(pathRoute.homePage);
-      } else {
-        showToast("Email hoặc mật khẩu không đúng!", "error");
-        console.error("Không tìm thấy thông tin user");
-      }
-    },
-  });
+        if (user) {
+          showToast("Đăng nhập thành công!", "success");
+          // gọi hàm lấy thông tin
+          getInfoUser(user.uid);
+          // chuyển sang trang home
+          navigate(pathRoute.homePage);
+        } else {
+          showToast("Email hoặc mật khẩu không đúng!", "error");
+          console.error("Không tìm thấy thông tin user");
+        }
+      },
+    });
 
   // hàm lấy thông tin của user khi đăng nhập thành công
   const getInfoUser = async (id) => {
@@ -59,65 +60,30 @@ const FormLogin = () => {
 
   return (
     <form
-      onSubmit={formik.handleSubmit}
+      onSubmit={handleSubmit}
       className="form flex-1 h-auto rounded-[5px] border border-light-gray p-[30px]"
     >
-      <span className="login-wrap inline-block w-full mb-6">
-        <label
-          className="mb-[10px] leading-[1] text-slate-gray text-[15px] font-medium inline-block"
-          htmlFor=""
-        >
-          Email Address*
-        </label>
-
-        <div className="wrap-input">
-          <input
-            className={`px-[15px] bg-transparent border text-gray text-[14px] 
-              outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] 
-              focus:ring-4 focus:ring-blue-500/25
-              ${
-                formik.touched.email && formik.errors.email
-                  ? "border-error focus:ring-0 focus:ring-error"
-                  : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-              }`}
-            placeholder="Enter your email..."
-            type="text"
-            name="email"
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.email && formik.errors.email && (
-            <p className="text-error mt-2 text-sm">{formik.errors.email}</p>
-          )}
-        </div>
-      </span>
-      <span className="login-wrap inline-block w-full">
-        <label
-          className="mb-[10px] leading-[1] text-slate-gray text-[15px] font-medium inline-block"
-          htmlFor=""
-        >
-          Password*
-        </label>
-        <div className="wrap-input">
-          <input
-            className={`px-[15px] bg-transparent border border-light-gray text-gray text-[14px] outline-none leading-[25px] min-h-[50px] w-full rounded-[5px] focus:ring-4 focus:ring-blue-500/25  ${
-              formik.touched.password && formik.errors.password
-                ? "border-error focus:ring-0 focus:ring-error"
-                : "border-light-gray focus:ring-4 focus:ring-blue-500/25"
-            }`}
-            type="password"
-            placeholder="Enter your password"
-            name="password"
-            value={formik.values.password}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-          />
-          {formik.touched.password && formik.errors.password && (
-            <p className="text-error mt-2 text-sm">{formik.errors.password}</p>
-          )}
-        </div>
-      </span>
+      <InputForm
+        placeholder={"Enter your email add..."}
+        lables={"Email Address*"}
+        name={"email"}
+        value={values.email}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched.email}
+        errors={errors.email}
+      />
+      <InputForm
+        placeholder={"Enter your password"}
+        lables={"Password*"}
+        name={"password"}
+        value={values.password}
+        handleChange={handleChange}
+        handleBlur={handleBlur}
+        touched={touched.password}
+        errors={errors.password}
+        typeInput={"password"}
+      />
       <span className="login-wrap inline-block w-full forget-password text-end">
         <label
           className="leading-[1] mt-[10px] text-gray text-[14px] font-medium text-end inline-block cursor-pointer hover:text-main"

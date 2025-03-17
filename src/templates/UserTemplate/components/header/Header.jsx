@@ -113,8 +113,8 @@ const contentAction = (user, handleLogout) => {
 // Item menu
 const menuItems = [
   { title: "Home", link: pathRoute.homePage },
-  { title: "Categories", icon: ChevronDown },
-  { title: "Product", icon: ChevronDown, link: pathRoute.productPage },
+  { title: "Categories", link: pathRoute.categoryPage },
+  // { title: "Product", icon: ChevronDown, link: pathRoute.productPage },
   { title: "Blogs", icon: ChevronDown, link: pathRoute.blogsPage },
   { title: "Pages", icon: ChevronDown },
   { title: "Offers", icon: BadgeEuroIcon, type: "left", size: 20 },

@@ -1,12 +1,13 @@
 import { CategoryContext } from "../../../context/CategoriesContext";
 import { useContext, useState } from "react";
 
-import { ProductContext } from "../../../context/ProductContext";
 import TitleSidebar from "./titleSidebar/TitleSidebar";
 import DropdownSidebar from "./dropdownSidebar/DropdownSidebar";
 
+import useFetchProducts from "../../../utils/useFetchProducts";
+
 const Sidebar = () => {
-  const listProducts = useContext(ProductContext);
+  const listProducts = useFetchProducts();
   const { categories } = useContext(CategoryContext);
   const [openDropdownCategory, setOpenDropdownCategory] = useState(true);
   const [openDropdownWeight, setOpenDropdownWeight] = useState(false);
