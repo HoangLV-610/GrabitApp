@@ -1,5 +1,5 @@
 import Breadcrumb from "../../components/breadcrumb/Breadcrumb";
-import { pathRoute } from "../../routes/path";
+
 import FormLogin from "./forms/FormLogin";
 import imageForm from "../../assets/image/image-form.png";
 import { useLocation } from "react-router-dom";
@@ -15,7 +15,6 @@ const Login = () => {
     type === "register"
       ? {
           titleBreadcrumb: "Register Page",
-          itemBreadcrumb: "Register Page",
           titlePage: "Register",
           subTitle: "Best place to buy and sell digital products.",
           type: "register",
@@ -23,28 +22,22 @@ const Login = () => {
       : type === "login"
       ? {
           titleBreadcrumb: "Login Page",
-          itemBreadcrumb: "Login Page",
           titlePage: "Login",
           subTitle: "Welcome back! Please login to continue.",
           type: "login",
         }
       : {
           titleBreadcrumb: "Edit Page",
-          itemBreadcrumb: "Edit Page",
           titlePage: " Edit Profile",
           subTitle: " Best place to buy and sell digital products.",
           type: "edit-profile",
         };
 
-  const { titleBreadcrumb, itemBreadcrumb, titlePage, subTitle } = data;
+  const { titleBreadcrumb, titlePage, subTitle } = data;
 
   return (
     <div className="container mx-auto">
-      <Breadcrumb
-        titleBreadcrumb={titleBreadcrumb}
-        itemBreadcrumb={itemBreadcrumb}
-        link={pathRoute.homePage}
-      />
+      <Breadcrumb titleBreadcrumb={titleBreadcrumb} />
       <div className="wrap-form-login py-10">
         <div className="wrap-content flex justify-center items-center flex-col">
           <div className="wrap-title text-center max-w-[390px]">

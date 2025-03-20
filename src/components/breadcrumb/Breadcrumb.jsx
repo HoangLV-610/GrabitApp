@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { pathRoute } from "../../routes/path";
 
 const Breadcrumb = (props) => {
-  const { titleBreadcrumb, itemBreadcrumb, link = pathRoute.homePage } = props;
+  const { titleBreadcrumb, link = pathRoute.homePage } = props;
+
   return (
     <div className="wrap-breadcrumb grid grid-cols-12 items-center p-[15px] border-x border-b border-light-gray rounded-b-[5px] mb-10">
       <div className="title-breadcrumb col-span-6 px-[12px]">
@@ -18,7 +19,7 @@ const Breadcrumb = (props) => {
           </li>
           <li className="active flex items-center gap-1 text-sm font-normal tracking-[.02rem] text-main">
             <ChevronRight size={14} />
-            <span>{itemBreadcrumb}</span>
+            <span>{titleBreadcrumb}</span>
           </li>
         </ul>
       </div>

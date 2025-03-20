@@ -12,10 +12,7 @@ const SidebarTemplate = () => {
       <Header />
       <Layout>
         <div className="wrap-product-component container mx-auto">
-          <Breadcrumb
-            titleBreadcrumb="Product Page"
-            itemBreadcrumb="Product Page"
-          />
+          <Breadcrumb titleBreadcrumb="Product Page" />
           <div className="container grid grid-cols-12 mx-auto gap-x-[24px] mb-10">
             <div className="sidebar-container col-span-3">
               <Sidebar />

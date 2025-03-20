@@ -24,7 +24,7 @@ const MyProfile = () => {
   return (
     <div className="wrap-my-profile">
       <div className="wrap-content container mx-auto">
-        <Breadcrumb titleBreadcrumb="Profile" itemBreadcrumb="Profile" />
+        <Breadcrumb titleBreadcrumb="Profile" />
         <div className="wrap-content-profile grid grid-cols-12 gap-x-[24px]">
           <div className="sidebar-profile col-span-3 h-max border border-light-gray rounded-[5px] py-[15px] px-[30px] bg-lightblue sticky top-[30px] ">
             <ul className="text-slate-gray flex flex-col">

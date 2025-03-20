@@ -4,26 +4,24 @@ import ItemBlogs from "./ItemBlogs";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "../../firebaseConfig";
+import { useDispatch } from "react-redux";
+import { handleGetAllBlogsAPI } from "../../redux/slice/blog.slice";
 
 const Blogs = () => {
+  const dispatch = useDispatch();
   const [listBlogs, setListBlogs] = useState([]);
+
   useEffect(() => {
-    const fetchBlogsData = async () => {
+    const fetchDataBlogs = async () => {
       try {
-        const blogsSnapshot = await getDocs(collection(db, "blogs"));
-        const dataBlogs = blogsSnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setListBlogs(dataBlogs);
+        const listBlog = await dispatch(handleGetAllBlogsAPI()).unwrap();
+        setListBlogs(listBlog);
       } catch (error) {
-        console.log("Lỗi khi lấy dữ liệu từ Firebase", error);
+        console.error("Lỗi khi lấy dữ liệu tin tức:", error);
       }
     };
-    fetchBlogsData();
-  }, []);
+    fetchDataBlogs();
+  }, [dispatch]);
   return (
     <>
       <div className="product-blogs">

@@ -11,7 +11,8 @@ import Sidebar from "../templates/SidebarTemplate/component/Sidebar";
 import useFetchProducts from "../utils/useFetchProducts";
 import ItemProduct from "../components/product/ItemProduct";
 import { useHandleProductDetail } from "../utils/navigation";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import NavigationCustom from "../components/navigation/NavigationCustom";
 
 const Category = () => {
   const listProduct = useFetchProducts();
@@ -29,7 +30,7 @@ const Category = () => {
     if (pageCurrent < totalPages) {
       const newPage = pageCurrent + 1;
       setPageCurrent(newPage);
-      swiperRef.current?.swiper.slideTo((newPage - 1) * 3);
+      swiperRef.current.slideTo(swiperRef.current.activeIndex + 3);
     }
   };
 
@@ -37,16 +38,13 @@ const Category = () => {
     if (pageCurrent > 1) {
       const newPage = pageCurrent - 1;
       setPageCurrent(newPage);
-      swiperRef.current?.swiper.slideTo((newPage - 1) * 3);
+      swiperRef.current.slideTo(swiperRef.current.activeIndex + 3);
     }
   };
 
   return (
     <div className="wrap-product-component container mx-auto">
-      <Breadcrumb
-        titleBreadcrumb="Product Page"
-        itemBreadcrumb="Product Page"
-      />
+      <Breadcrumb titleBreadcrumb="Product Page" />
       <CategoryContent />
       <div className="container grid grid-cols-12 mx-auto gap-x-[24px] mb-10">
         <div className="sidebar-container col-span-3">
@@ -65,6 +63,7 @@ const Category = () => {
               prevEl: prevRef.current,
               nextEl: nextRef.current,
             }}
+            onSwiper={(swiper) => (swiper.current = swiper)}
           >
             {(listProduct || []).map((product) => (
               <SwiperSlide
@@ -76,47 +75,15 @@ const Category = () => {
             ))}
           </Swiper>
 
-          {/* Custom Navigation */}
-          <div className="wrap-navigation flex justify-between items-center mt-4">
-            <span>
-              Showing {(pageCurrent - 1) * productsPerPage + 1}-
-              {Math.min(pageCurrent * productsPerPage, listProduct.length)} of{" "}
-              {listProduct.length} item(s)
-            </span>
-            <div className="flex items-center gap-x-[5px] text-[16px] font-light">
-              <button
-                onClick={handlePrevPage}
-                ref={prevRef}
-                disabled={pageCurrent === 1}
-                className={`btn-prev w-auto px-[10px] text-white bg-main leading-[30px] rounded-[5px] cursor-pointer flex items-center mt-[1px] ${
-                  pageCurrent === 1 ? "opacity-50 cursor-not-allowed" : ""
-                }`}
-              >
-                {pageCurrent > 1 && (
-                  <ChevronLeft size={14} className="mr-[6px] mt-[1px]" />
-                )}
-                Prev
-              </button>
-              <span className="w-auto px-[13px] text-white bg-main leading-[30px] rounded-[5px]">
-                {pageCurrent}
-              </span>
-              <button
-                onClick={handleNextPage}
-                ref={nextRef}
-                disabled={pageCurrent === totalPages}
-                className={`btn-next w-auto px-[13px] text-white bg-main leading-[30px] rounded-[5px] cursor-pointer flex items-center mt-[1px] ${
-                  pageCurrent === totalPages
-                    ? "opacity-50 !cursor-not-allowed"
-                    : ""
-                }`}
-              >
-                Next
-                {pageCurrent < totalPages && (
-                  <ChevronRight size={14} className="ml-[6px] mt-[1px]" />
-                )}
-              </button>
-            </div>
-          </div>
+          <NavigationCustom
+            allList={listProduct}
+            pageCurrent={pageCurrent}
+            typeList={"product"}
+            prevRef={prevRef}
+            nextRef={nextRef}
+            handleNextPage={handleNextPage}
+            handlePrevPage={handlePrevPage}
+          />
         </div>
       </div>
     </div>

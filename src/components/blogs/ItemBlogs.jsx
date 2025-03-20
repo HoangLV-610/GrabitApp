@@ -1,9 +1,13 @@
 import { ChevronsRight } from "lucide-react";
 
-const ItemBlogs = (props) => {
-  const { date, title, image } = props.blog;
+const ItemBlogs = ({ blog, showDescription = false }) => {
+  const { date, title, image } = blog;
+
+  const description =
+    "Lorem Ipsum is simply dummy text of the printing and typesetting industry";
+
   return (
-    <div className="group/blog">
+    <div className="group/blog cursor-pointer">
       <div className="image w-full rounded-[5px] overflow-hidden">
         <img
           src={image}
@@ -18,6 +22,11 @@ const ItemBlogs = (props) => {
         <h4 className="!text-[17px] mt-[10px] mb-[15px] leading-[26px] font-medium  !text-slate-gray line-clamp-2">
           {title}
         </h4>
+        {showDescription && (
+          <p className="text-[14px] text-gray leading-[28px] font-light tracking-[.02rem] mb-4">
+            {description}
+          </p>
+        )}
       </div>
       <button className="flex items-center text-[13px] justify-center text-slate-gray hover:text-main transition-colors duration-300">
         <span>Read More</span>

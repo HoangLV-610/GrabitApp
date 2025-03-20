@@ -201,3 +201,18 @@ export const updateMyProfile = async (dispatch, dataUpdate) => {
     return false;
   }
 };
+
+// lấy danh sách tin tức
+export const getAllBlogs = async () => {
+  try {
+    const dataSnapshot = await getDocs(collection(db, "blogs"));
+    const dataBlogs = dataSnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return dataBlogs;
+  } catch (error) {
+    console.log("Không lấy được danh sách tin tức", error);
+  }
+};
