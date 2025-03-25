@@ -125,19 +125,16 @@ const menuItems = [
       },
       {
         titlePage: "Contact Us",
-        // link: pathRoute.aboutUsPage,
+        link: pathRoute.contactPage,
       },
       {
         titlePage: "Cart",
-        // link: pathRoute.aboutUsPage,
       },
       {
         titlePage: "Checkout",
-        // link: pathRoute.aboutUsPage,
       },
       {
         titlePage: "Compare",
-        // link: pathRoute.aboutUsPage,
       },
     ],
   },
