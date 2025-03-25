@@ -23,7 +23,7 @@ const ItemBlogs = ({ blog, showDescription = false }) => {
           {title}
         </h4>
         {showDescription && (
-          <p className="text-[14px] text-gray leading-[28px] font-light tracking-[.02rem] mb-4">
+          <p className="text-[14px] text-gray leading-[28px] font-light tracking-[.02rem] mb-4 line-clamp-2">
             {description}
           </p>
         )}

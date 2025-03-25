@@ -7,8 +7,8 @@ const initialState = {
 
 export const handleGetAllBlogsAPI = createAsyncThunk(
   "blogSlice/handleGetAllBlogs",
-  async (stringData) => {
-    console.log(stringData);
+  async () => {
+    // console.log(stringData);
     const result = getAllBlogs();
     return result;
   }

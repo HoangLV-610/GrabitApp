@@ -1,10 +1,18 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import SearchIcon from "../../icons/SearchIcon";
+import useDebounce from "../../../hooks/useDebounce";
 
 // input search
 const Input = (props) => {
   const [searchTerm, setSearchTerm] = useState("");
   const inputRef = useRef();
+
+  const debounceSearch = useDebounce(searchTerm);
+  useEffect(() => {
+    if (debounceSearch) {
+      console.log(debounceSearch);
+    }
+  }, [debounceSearch]);
 
   return (
     <div
@@ -12,7 +20,9 @@ const Input = (props) => {
     >
       <input
         value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
+        onChange={(e) => {
+          setSearchTerm(e.target.value);
+        }}
         ref={inputRef}
         placeholder={props.placeholder}
         className={`rounded-md flex-1 outline-none ${props.classNameInput}`}

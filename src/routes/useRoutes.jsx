@@ -1,22 +1,27 @@
-import UserTemplate from "../templates/UserTemplate/UserTemplate";
-import SidebarTemplate from "../templates/SidebarTemplate/SidebarTemplate";
-
+import { lazy, Suspense } from "react";
 import { useRoutes } from "react-router";
 import { pathRoute } from "./path";
 
-import Home from "../pages/Home";
-import AboutUs from "../pages/AboutUs";
-import Product from "../pages/Product";
-import Blogs from "../pages/Blogs";
-import ContactUs from "../pages/ContactUs";
-import Login from "../pages/users/Login";
-import PageNotFound from "../pages/PageNotFound/PageNotFound";
-import FormRegister from "../pages/users/forms/FormRegister";
-import ProductDetail from "../pages/product/ProductDetail";
-import MyProfile from "../pages/users/MyProfile";
+import UserTemplate from "../templates/UserTemplate/UserTemplate";
+import SidebarTemplate from "../templates/SidebarTemplate/SidebarTemplate";
 
-import FormEditProfile from "../pages/users/forms/FormEditProfile";
+import Home from "../pages/Home";
+import Product from "../pages/Product";
+import Login from "../pages/users/Login";
 import Category from "../pages/Category";
+import Loading from "../components/loading/Loading";
+import PageNotFound from "../pages/PageNotFound/PageNotFound";
+
+// Sử dụng lazy loading cho các component
+const AboutUs = lazy(() => import("../pages/AboutUs"));
+const Blogs = lazy(() => import("../pages/Blogs"));
+const ContactUs = lazy(() => import("../pages/ContactUs"));
+const FormRegister = lazy(() => import("../pages/users/forms/FormRegister"));
+const ProductDetail = lazy(() => import("../pages/product/ProductDetail"));
+const MyProfile = lazy(() => import("../pages/users/MyProfile"));
+const FormEditProfile = lazy(() =>
+  import("../pages/users/forms/FormEditProfile")
+);
 
 const useRoutesCustom = () => {
   const routes = useRoutes([
@@ -30,7 +35,11 @@ const useRoutesCustom = () => {
         },
         {
           path: pathRoute.aboutUsPage,
-          element: <AboutUs />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <AboutUs />
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.categoryPage,
@@ -42,27 +51,51 @@ const useRoutesCustom = () => {
         },
         {
           path: pathRoute.blogsPage,
-          element: <Blogs />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Blogs />,
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.contactPage,
-          element: <ContactUs />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <ContactUs />
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.login,
-          element: <Login />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <Login />
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.register,
-          element: <FormRegister />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <FormRegister />
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.myProfile,
-          element: <MyProfile />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <MyProfile />
+            </Suspense>
+          ),
         },
         {
           path: pathRoute.editProfile,
-          element: <FormEditProfile />,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <FormEditProfile />
+            </Suspense>
+          ),
         },
       ],
     },

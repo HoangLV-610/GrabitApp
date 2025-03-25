@@ -1,5 +1,5 @@
 import { addDoc, collection } from "firebase/firestore";
-import { db } from "./firebaseConfig.js";
+import { db } from "../firebaseConfig.js";
 
 const listBlogs = [
   {

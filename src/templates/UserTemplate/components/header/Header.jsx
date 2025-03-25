@@ -18,7 +18,6 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../../../../../public/logo.png";
-
 import ItemActionHeader from "./ItemActionHeader";
 import ButtonDropDown from "../../../../components/ui/button/ButtonDropDown";
 import Input from "../../../../components/ui/input/Input";
@@ -116,7 +115,32 @@ const menuItems = [
   { title: "Categories", link: pathRoute.categoryPage },
   // { title: "Product", icon: ChevronDown, link: pathRoute.productPage },
   { title: "Blogs", link: pathRoute.blogsPage },
-  { title: "Pages", icon: ChevronDown },
+  {
+    title: "Pages",
+    icon: ChevronDown,
+    content: [
+      {
+        titlePage: "About Us",
+        link: pathRoute.aboutUsPage,
+      },
+      {
+        titlePage: "Contact Us",
+        // link: pathRoute.aboutUsPage,
+      },
+      {
+        titlePage: "Cart",
+        // link: pathRoute.aboutUsPage,
+      },
+      {
+        titlePage: "Checkout",
+        // link: pathRoute.aboutUsPage,
+      },
+      {
+        titlePage: "Compare",
+        // link: pathRoute.aboutUsPage,
+      },
+    ],
+  },
   { title: "Offers", icon: BadgeEuroIcon, type: "left", size: 20 },
 ];
 
@@ -242,10 +266,12 @@ const Header = () => {
     );
   };
 
+  // trở về trang home
   const handleReturnHomePage = () => {
     console.log("Navigating to:", pathRoute.homePage);
     navigate(pathRoute.homePage);
   };
+
   return (
     <div className="header" id="header">
       <div className="wrap-header">
@@ -321,27 +347,48 @@ const Header = () => {
             >
               All Categories
             </ButtonDropDown>
-            <nav className="nav-menu">
+            <nav className="nav-menu min-h-[50px] flex">
               <ul className="flex space-x-[50px] items-center">
                 {menuItems.map((item, index) => {
                   return (
-                    <li
-                      key={index}
-                      className="flex items-center text-slate-gray text-[15px] font-medium gap-1 hover:text-main transition duration-300 "
-                    >
-                      {item.type === "left" && item.icon && (
-                        <item.icon size={item.size && item.size} />
-                      )}
-                      <Link
-                        to={item.link && item.link}
-                        className="leading-none"
-                      >
-                        {item.title}
-                      </Link>
-                      {item.type !== "left" && item.icon && (
-                        <item.icon size={item.size ? item.size : 18} />
-                      )}
-                    </li>
+                    <div className="group h-full" key={index}>
+                      <li className="flex items-center gap-1 relative h-full text-slate-gray">
+                        {item.type === "left" && item.icon && (
+                          <item.icon
+                            className="group-hover:text-main transition duration-300"
+                            size={item.size && item.size}
+                          />
+                        )}
+                        <Link
+                          to={item.link && item.link}
+                          className="leading-none text-[15px] font-medium group-hover:text-main transition duration-300 "
+                        >
+                          {item.title}
+                        </Link>
+                        {item.type !== "left" && item.icon && (
+                          <item.icon
+                            className="group-hover:text-main transition duration-300"
+                            size={item.size ? item.size : 18}
+                          />
+                        )}
+                        {item.content && (
+                          <ul className="absolute w-auto mt-[15px] z-10 top-full bg-white left-0 min-w-[205px] rounded-[5px] shadow-md border-[#eee] flex flex-col opacity-0 invisible transition-all duration-300 group-hover:mt-[6px] group-hover:opacity-100 group-hover:visible pointer-events-auto">
+                            {item.content.map((item, index) => {
+                              return (
+                                <li
+                                  key={index}
+                                  className="sub-menu leading-[20px] px-5 py-[10px] font-normal text-[13px] text-gray transition-all duration-300 hover:text-main"
+                                >
+                                  <Link to={item.link && item.link}>
+                                    {item.titlePage}
+                                  </Link>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        )}
+                      </li>
+                    </div>
                   );
                 })}
               </ul>

@@ -7,8 +7,8 @@ const initialState = {
 
 export const handleGetAllProductAPI = createAsyncThunk(
   "productSlice/handleGetAllProduct",
-  async (stringData) => {
-    console.log(stringData);
+  async () => {
+    // console.log(stringData);
     const result = await getAllProduct();
     return result;
   }
