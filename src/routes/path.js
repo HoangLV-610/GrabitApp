@@ -5,6 +5,7 @@ export const pathRoute = {
   categoryPage: "/category",
   blogsPage: "/blogs",
   contactPage: "/contact",
+  wishListPage: "/wishListPage",
   login: "/account",
   register: "/register",
   productDetail: "/product-detail/:id",

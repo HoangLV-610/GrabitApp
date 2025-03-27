@@ -30,7 +30,13 @@ export { db, auth, providerFacebook, providerGoogle, signInWithPopup };
 
 // Thêm DATABASE
 // import { initializeApp } from "firebase/app";
-// import { getFirestore } from "firebase/firestore";
+// import {
+//   getFirestore,
+//   collection,
+//   doc,
+//   getDocs,
+//   updateDoc,
+// } from "firebase/firestore";
 // import dotenv from "dotenv";
 
 // // Load biến môi trường từ file .env
@@ -50,4 +56,23 @@ export { db, auth, providerFacebook, providerGoogle, signInWithPopup };
 // const app = initializeApp(firebaseConfig);
 // const db = getFirestore(app);
 
+// const updateAllProductsWithStock = async () => {
+//   const productsRef = collection(db, "products");
+//   const querySnapshot = await getDocs(productsRef);
+
+//   querySnapshot.forEach(async (productDoc) => {
+//     const productRef = doc(db, "products", productDoc.id);
+
+//     // Tạo số lượng stock ngẫu nhiên từ 0 - 100
+//     const randomStock = Math.floor(Math.random() * 101);
+
+//     await updateDoc(productRef, {
+//       stock: randomStock,
+//     });
+
+//     console.log(`Updated product ${productDoc.id} with stock: ${randomStock}`);
+//   });
+// };
+
+// updateAllProductsWithStock();
 // export { db };

@@ -11,6 +11,7 @@ import Login from "../pages/users/Login";
 import Category from "../pages/Category";
 import Loading from "../components/loading/Loading";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
+import WishList from "../pages/WishList";
 
 // Sử dụng lazy loading cho các component
 const AboutUs = lazy(() => import("../pages/AboutUs"));
@@ -94,6 +95,14 @@ const useRoutesCustom = () => {
           element: (
             <Suspense fallback={<Loading />}>
               <FormEditProfile />
+            </Suspense>
+          ),
+        },
+        {
+          path: pathRoute.wishListPage,
+          element: (
+            <Suspense fallback={<Loading />}>
+              <WishList />
             </Suspense>
           ),
         },

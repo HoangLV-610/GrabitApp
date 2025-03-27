@@ -6,9 +6,13 @@ import { useFormik } from "formik";
 import { registerValidationSchema } from "../../../utils/validation/validationSchema";
 import { registerUser } from "../../../services/AuthService";
 import InputForm from "../../../components/ui/input/InputForm";
+import { showToast } from "../../../utils/toast";
+import { useState } from "react";
 
 const FormRegister = () => {
   const navigate = useNavigate();
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const { values, handleSubmit, handleChange, handleBlur, errors, touched } =
     useFormik({
@@ -25,10 +29,27 @@ const FormRegister = () => {
         postCode: "",
       },
       validationSchema: registerValidationSchema,
-      onSubmit: (values) => {
-        registerUser(values);
+      onSubmit: async (values) => {
+        setIsLoading(true);
+        try {
+          const result = await registerUser(values);
+          if (result?.message === "success") {
+            showToast("Đăng ký thành công!", "success");
+            navigate(pathRoute.homePage);
+          } else {
+            showToast(result?.error, "error");
+            console.error("Lỗi khi đăng ký:", result);
+          }
+        } catch (error) {
+          showToast("Lỗi hệ thống! Vui lòng thử lại sau.", "error");
+          console.error("Lỗi khi đăng ký:", error);
+        } finally {
+          setIsLoading(false);
+        }
       },
     });
+
+  console.log(isLoading);
 
   return (
     <form
@@ -233,7 +254,7 @@ const FormRegister = () => {
             Login
           </span>
         </span>
-        <Button buttonType="buttonIcon" type="submit">
+        <Button buttonType="buttonIcon" type="submit" disabled={isLoading}>
           Register
         </Button>
       </div>

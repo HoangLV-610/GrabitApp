@@ -1,9 +1,15 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const ItemActionHeader = (props) => {
-  const { icon, title, subTitle, content } = props.action;
+  const { icon, title, subTitle, content, to, wishList } = props.action;
+  const navigate = useNavigate();
+
+  const handleButton = () => {
+    navigate(to, { state: wishList });
+  };
   return (
-    <div className="relative group">
+    <button onClick={handleButton} className="relative group ">
       {/* Wrapper chính */}
       <div className="icon flex items-center space-x-2 cursor-pointer">
         {React.cloneElement(icon, {
@@ -23,7 +29,7 @@ const ItemActionHeader = (props) => {
           {content}
         </div>
       )}
-    </div>
+    </button>
   );
 };
 

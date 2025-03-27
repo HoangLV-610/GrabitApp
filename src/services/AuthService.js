@@ -1,16 +1,21 @@
 import {
   createUserWithEmailAndPassword,
+  fetchSignInMethodsForEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 import { auth, db, providerFacebook, providerGoogle } from "../firebaseConfig";
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
+  query,
   setDoc,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { showToast } from "../utils/toast";
 import { updateUser } from "../redux/slice/user.slice";
@@ -39,6 +44,15 @@ export const handleGoogleLogin = async () => {
 // đăng ký tài khoản
 export const registerUser = async (user) => {
   try {
+    // Kiểm tra xem email đã tồn tại chưa
+    const signInMethods = await fetchSignInMethodsForEmail(auth, user.email);
+    if (signInMethods.length > 0) {
+      showToast(
+        "Email này đã được đăng ký. Vui lòng sử dụng email khác!",
+        "error"
+      );
+      return { error: "Email đã tồn tại" };
+    }
     const userCredential = await createUserWithEmailAndPassword(
       auth,
       user.email,
@@ -46,8 +60,10 @@ export const registerUser = async (user) => {
     );
 
     const newUser = userCredential.user;
+    const userId = newUser.uid;
 
     await setDoc(doc(db, "users", newUser.uid), {
+      userId,
       address: user.address,
       city: user.city,
       country: user.country,
@@ -60,9 +76,18 @@ export const registerUser = async (user) => {
       createAt: new Date(),
     });
 
-    return newUser;
+    return { message: "success", newUser };
   } catch (error) {
-    console.error("Registration failed:", error.message);
+    let errorMessage = "Đăng ký không thành công!";
+    if (error.code === "auth/email-already-in-use") {
+      errorMessage = "Email này đã được đăng ký. Vui lòng sử dụng email khác!";
+    } else if (error.code === "auth/weak-password") {
+      errorMessage = "Mật khẩu quá yếu. Vui lòng nhập mật khẩu mạnh hơn!";
+    } else if (error.code === "auth/invalid-email") {
+      errorMessage = "Email không hợp lệ!";
+    }
+
+    return { message: "error", error: errorMessage };
   }
 };
 
@@ -214,5 +239,96 @@ export const getAllBlogs = async () => {
     return dataBlogs;
   } catch (error) {
     console.log("Không lấy được danh sách tin tức", error);
+  }
+};
+
+// Thêm sản phẩm vào danh sách yêu thích (wishlist)
+export const addProductWishList = async (userId, productId) => {
+  try {
+    if (!userId) {
+      showToast("Vui lòng đăng nhập", "success");
+      return;
+    }
+    const addProduct = await addDoc(collection(db, "wishList"), {
+      userId,
+      productId,
+      addedAt: new Date(),
+    });
+
+    if (addProduct) {
+      showToast("Đã thêm vào wishlist", "success");
+      return addProduct;
+    }
+  } catch (error) {
+    showToast("Add sản phẩm thất bại", "error");
+    console.log("Không thêm được sản phẩm vào wishlist", error);
+  }
+};
+
+export const checkProductWishList = async (productId) => {
+  try {
+    const q = query(
+      collection(db, "wishList"),
+      where("productId", "==", productId)
+    );
+    const snapshot = await getDocs(q);
+
+    return !snapshot.empty; // Nếu có dữ liệu thì trả về true, ngược lại trả về false
+  } catch (error) {
+    console.log("Lỗi kiểm tra wishlist:", error);
+    return false;
+  }
+};
+
+// Lấy danh sách wishlist
+export const getItemWishList = async (userId) => {
+  try {
+    const q = query(collection(db, "wishList"), where("userId", "==", userId));
+    const querySnapshot = await getDocs(q);
+    const wishlist = querySnapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return wishlist;
+  } catch (error) {
+    console.log("Không lấy được wishlist", error);
+  }
+};
+
+// lấy tất cả danh sách wishlist
+export const getAllWishList = async () => {
+  try {
+    const wishlistSnapchot = await getDocs(collection(db, "wishList"));
+    const dataWishList = wishlistSnapchot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    console.log(dataWishList);
+
+    return dataWishList;
+  } catch (error) {
+    console.log("Không lấy được danh sách wishlist", error);
+    return []; // Trả về mảng rỗng nếu lỗi
+  }
+};
+
+// Xoá item của wishlist
+export const removeProductWishList = async (userId, productId) => {
+  try {
+    const q = query(
+      collection(db, "wishList"),
+      where("userId", "==", userId),
+      where("productId", "==", productId)
+    );
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+
+    showToast("Đã xoá khỏi wishlist", "success");
+  } catch (error) {
+    console.log("Lỗi khi xoá sản phẩm khỏi wishlist:", error);
+    showToast("Xoá sản phẩm thất bại", "error");
   }
 };

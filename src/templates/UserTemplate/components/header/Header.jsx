@@ -14,7 +14,7 @@ import {
   ShoppingCart,
   User,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../../../../../public/logo.png";
@@ -25,6 +25,7 @@ import { pathRoute } from "../../../../routes/path";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../redux/slice/user.slice";
 import { showToast } from "../../../../utils/toast";
+import { handleGetAllWishListAPI } from "../../../../redux/slice/productWishList.slice";
 
 // DATA DROPDOWN
 const listContent = [
@@ -144,6 +145,12 @@ const menuItems = [
 const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice.user);
+  const wishList = useSelector((state) => state.productWishList.arrWishList);
+
+  useEffect(() => {
+    dispatch(handleGetAllWishListAPI());
+    console.log(wishList);
+  }, [dispatch]);
 
   const handleLogout = () => {
     showToast("Bạn đã đăng xuất", "success");
@@ -160,7 +167,9 @@ const Header = () => {
     {
       icon: <Heart size={24} />,
       title: "Wishlist",
-      subTitle: "3-ITEMS",
+      subTitle: `${wishList.length}-ITEMS`,
+      to: pathRoute.wishListPage,
+      wishList: wishList,
     },
     {
       icon: <ShoppingCart size={24} />,
