@@ -41,7 +41,7 @@ const Blogs = () => {
             slidesPerView={5}
             spaceBetween={24}
           >
-            {listBlogs.length > 0 &&
+            {(listBlogs ?? []).length > 0 &&
               listBlogs.map((blog, index) => {
                 return (
                   <SwiperSlide key={index}>
