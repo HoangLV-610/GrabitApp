@@ -9,8 +9,18 @@ import NewArrivals from "../components/product/NewArrivals";
 import Blogs from "../components/blogs/Blogs";
 import Services from "../components/services/Services";
 import TopProduct from "../components/product/TopProduct";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { handleGetAllWishListAPI } from "../redux/slice/productWishList.slice";
+import useUserId from "../hooks/useUserId";
 
 const Home = () => {
+  const dispatch = useDispatch();
+  const userId = useUserId();
+  useEffect(() => {
+    dispatch(handleGetAllWishListAPI(userId)); // Gọi API khi component mount
+  }, [dispatch]);
+
   return (
     <>
       <Banner />

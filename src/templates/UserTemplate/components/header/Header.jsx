@@ -88,19 +88,22 @@ const contentAction = (user, handleLogout) => {
         : [
             {
               title: "Register",
-              link: pathRoute.login,
+              link: pathRoute.register,
               state: { type: "register" },
             },
             { title: "Checkout", link: pathRoute.checkout },
             { title: "Login", link: pathRoute.login, state: { type: "login" } },
           ]
       ).map((item, index) => (
-        <li key={index} className="px-5 py-[10px] text-[13px] w-full">
+        <li
+          key={index}
+          className="px-5 py-[10px] text-[13px] w-full text-start"
+        >
           <Link
-            className="text-gray hover:text-main"
+            className="text-gray hover:text-main "
             to={item.link}
             state={item.state}
-            onClick={item.onClick ? () => item.onClick() : undefined}
+            // onClick={item.onClick ? () => item.onClick() : undefined}
           >
             {item.title}
           </Link>
@@ -148,7 +151,7 @@ const Header = () => {
   const wishList = useSelector((state) => state.productWishList.arrWishList);
 
   useEffect(() => {
-    dispatch(handleGetAllWishListAPI());
+    dispatch(handleGetAllWishListAPI(user.id));
     console.log(wishList);
   }, [dispatch]);
 
@@ -170,6 +173,7 @@ const Header = () => {
       subTitle: `${wishList.length}-ITEMS`,
       to: pathRoute.wishListPage,
       wishList: wishList,
+      typeButton: "wishlist",
     },
     {
       icon: <ShoppingCart size={24} />,

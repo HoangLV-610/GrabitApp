@@ -67,10 +67,10 @@ const Login = () => {
                   <img src={imageForm} alt="" className="w-full" />
                 </div>
               </>
-            ) : type === "register" ? (
-              <FormRegister />
-            ) : (
+            ) : type === "eidt-profile" ? (
               <FormEditProfile />
+            ) : (
+              <FormRegister />
             )}
           </div>
         </div>

@@ -296,18 +296,27 @@ export const getItemWishList = async (userId) => {
 };
 
 // lấy tất cả danh sách wishlist
-export const getAllWishList = async () => {
-  try {
-    const wishlistSnapchot = await getDocs(collection(db, "wishList"));
-    const dataWishList = wishlistSnapchot.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
-    console.log(dataWishList);
+export const getAllWishList = async (userId) => {
+  console.log(userId);
 
-    return dataWishList;
+  try {
+    const q = query(collection(db, "wishList"), where("userId", "==", userId));
+    const snapshot = await getDocs(q);
+
+    if (snapshot.empty) {
+      console.log("Không có wishlist nào.");
+      return [];
+    }
+
+    // Chuyển đổi dữ liệu từ snapshot thành mảng object
+    const wishList = snapshot.docs.map((doc) => ({
+      id: doc.id, // Lấy ID của document
+      ...doc.data(), // Lấy dữ liệu
+    }));
+
+    return wishList;
   } catch (error) {
-    console.log("Không lấy được danh sách wishlist", error);
+    console.error("Không lấy được danh sách wishlist:", error);
     return []; // Trả về mảng rỗng nếu lỗi
   }
 };

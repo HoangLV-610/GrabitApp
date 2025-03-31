@@ -28,7 +28,7 @@ const WishList = () => {
 
   useEffect(() => {
     if (userId) {
-      dispatch(handleGetAllWishListAPI()); // Gọi API để cập nhật wishList
+      dispatch(handleGetAllWishListAPI(userId)); // Gọi API để cập nhật wishList
     }
   }, [userId]);
 
@@ -55,8 +55,6 @@ const WishList = () => {
       dataProduct: product,
     };
   });
-
-  console.log(listAllWishList);
 
   // Cấu hình cột cho bảng
   const styleTitleTable =
@@ -152,7 +150,7 @@ const WishList = () => {
       // Chỉ gọi API nếu product thực sự bị xoá
       const newWishList = wishList.filter((item) => item.id !== id);
       if (newWishList.length !== wishList.length) {
-        dispatch(handleGetAllWishListAPI());
+        dispatch(handleGetAllWishListAPI(userId));
       }
     } catch (error) {
       console.log("Lỗi xử lý wishlist:", error);

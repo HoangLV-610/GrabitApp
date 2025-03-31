@@ -9,7 +9,6 @@ import {
   removeProductWishListAPI,
 } from "../../redux/slice/productWishList.slice";
 import { useEffect, useState } from "react";
-import { store } from "../../redux/configStore";
 
 const ItemProduct = (props) => {
   const { product } = props;
@@ -18,16 +17,11 @@ const ItemProduct = (props) => {
   const dispatch = useDispatch();
 
   // Lấy danh sách Wishlist từ Redux
-  const wishlist = useSelector((state) => state.productWishList.arrWishList);
-  useEffect(() => {
-    dispatch(handleGetAllWishListAPI()); // Gọi API khi component mount
-  }, [dispatch]);
+  const { wishlistObject } = useSelector((state) => state.productWishList);
 
   useEffect(() => {
-    setIsInWishlist(
-      wishlist?.some((item) => item.productId === product.id) || false
-    );
-  }, [wishlist, product]);
+    setIsInWishlist(!!wishlistObject[product.id]);
+  }, [wishlistObject, product]);
 
   // Xử lý thêm/xóa Wishlist
   const handleAddWishList = async (event) => {
@@ -37,13 +31,7 @@ const ItemProduct = (props) => {
       return;
     }
 
-    // Lấy danh sách mới nhất từ Redux
-    const currentWishlist = store.getState().productWishList.arrWishList;
-
-    // Kiểm tra sản phẩm đã tồn tại chưa
-    const isAlreadyInWishlist = currentWishlist.some(
-      (item) => item.productId === product.id
-    );
+    const isAlreadyInWishlist = wishlistObject[product.id];
 
     try {
       if (isAlreadyInWishlist) {
@@ -52,7 +40,7 @@ const ItemProduct = (props) => {
         ).unwrap();
 
         // Cập nhật lại danh sách từ Redux sau khi xoá
-        dispatch(handleGetAllWishListAPI());
+        dispatch(handleGetAllWishListAPI(userId));
         setIsInWishlist(false);
       } else {
         await dispatch(
@@ -60,7 +48,7 @@ const ItemProduct = (props) => {
         ).unwrap();
 
         // Cập nhật lại danh sách từ Redux sau khi thêm
-        dispatch(handleGetAllWishListAPI());
+        dispatch(handleGetAllWishListAPI(userId));
         setIsInWishlist(true);
       }
     } catch (error) {

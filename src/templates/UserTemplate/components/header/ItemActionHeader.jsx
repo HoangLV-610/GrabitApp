@@ -2,14 +2,18 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const ItemActionHeader = (props) => {
-  const { icon, title, subTitle, content, to, wishList } = props.action;
+  const { icon, title, subTitle, content, to, wishList, typeButton } =
+    props.action;
   const navigate = useNavigate();
 
   const handleButton = () => {
     navigate(to, { state: wishList });
   };
   return (
-    <button onClick={handleButton} className="relative group ">
+    <button
+      onClick={typeButton == "wishlist" ? handleButton : null}
+      className="relative group "
+    >
       {/* Wrapper chính */}
       <div className="icon flex items-center space-x-2 cursor-pointer">
         {React.cloneElement(icon, {
@@ -25,7 +29,7 @@ const ItemActionHeader = (props) => {
         </div>
       </div>
       {content && (
-        <div className="mt-[10px] absolute left-0 top-full z-10 opacity-0 pointer-events-none group-hover:mt-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 bg-white shadow-lg rounded-[5px] py-[10px] min-w-[150px] border border-light-gray">
+        <div className="mt-[10px] absolute pointer-events-none left-0 top-full z-10 opacity-0 group-hover:mt-0 group-hover:opacity-100 group-hover:pointer-events-auto transition-all duration-300 bg-white shadow-lg rounded-[5px] py-[10px] min-w-[150px] border border-light-gray">
           {content}
         </div>
       )}

@@ -7,13 +7,14 @@ import {
 
 const initialState = {
   arrWishList: [],
+  wishlistObject: {},
 };
 
 // API lấy danh sách wishlist
 export const handleGetAllWishListAPI = createAsyncThunk(
   "productWishList/handleGetAllWishListAPI",
-  async () => {
-    const result = await getAllWishList();
+  async (userId) => {
+    const result = await getAllWishList(userId);
     return result.map((item) => ({
       ...item,
       addedAt: item.addedAt?.toDate?.().toISOString() || null, // Chuyển Timestamp thành string
@@ -52,21 +53,15 @@ const productWishList = createSlice({
   extraReducers: (builder) => {
     builder.addCase(handleGetAllWishListAPI.fulfilled, (state, action) => {
       state.arrWishList = action.payload; // Không cần map lại vì đã chuyển đổi ở trên
+      const mappedData = action.payload.reduce((acc, item) => {
+        acc[item.productId] = item;
+        return acc;
+      }, {});
+      state.wishlistObject = mappedData;
     });
     builder.addCase(removeProductWishListAPI.fulfilled, (state, action) => {
       state.arrWishList = action.payload;
     });
-
-    // extraReducers: (builder) => {
-    //   builder.addCase(handleGetAllWishListAPI.fulfilled, (state, action) => {
-    //     state.arrWishList = action.payload.map((item) => ({
-    //       ...item,
-    //       addedAt:
-    //         item.addedAt instanceof Timestamp
-    //           ? item.addedAt.toDate().toISOString() // Chuyển thành ISO string
-    //           : item.addedAt,
-    //     }));
-    //   });
   },
 });
 
