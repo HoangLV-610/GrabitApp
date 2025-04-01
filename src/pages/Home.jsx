@@ -13,12 +13,14 @@ import { useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { handleGetAllWishListAPI } from "../redux/slice/productWishList.slice";
 import useUserId from "../hooks/useUserId";
+import { handleGetAllProductToCartAPI } from "../redux/slice/cart.slice";
 
 const Home = () => {
   const dispatch = useDispatch();
   const userId = useUserId();
   useEffect(() => {
     dispatch(handleGetAllWishListAPI(userId)); // Gọi API khi component mount
+    dispatch(handleGetAllProductToCartAPI(userId));
   }, [dispatch]);
 
   return (

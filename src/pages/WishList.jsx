@@ -22,7 +22,10 @@ import useUserId from "../hooks/useUserId";
 const WishList = () => {
   const dispatch = useDispatch();
   const listProduct = useSelector((state) => state.productSlice.arrProduct);
-  const wishList = useSelector((state) => state.productWishList.arrWishList);
+
+  const { wishlistObject, arrWishList } = useSelector(
+    (state) => state.productWishList
+  );
 
   const userId = useUserId();
 
@@ -46,7 +49,7 @@ const WishList = () => {
   }, [dispatch]); // ✅ Chỉ chạy một lần
 
   // từ idproduct lấy ra thông tin của product
-  const listAllWishList = wishList.map((wish) => {
+  const listAllWishList = arrWishList.map((wish) => {
     const product =
       listProduct?.find((product) => product.id === wish.productId) || {};
 
@@ -142,14 +145,15 @@ const WishList = () => {
       return;
     }
 
-    try {
-      await dispatch(
-        removeProductWishListAPI({ userId, productId: id })
-      ).unwrap();
+    const isAlreadyInWishlist = wishlistObject[id];
 
-      // Chỉ gọi API nếu product thực sự bị xoá
-      const newWishList = wishList.filter((item) => item.id !== id);
-      if (newWishList.length !== wishList.length) {
+    try {
+      if (isAlreadyInWishlist) {
+        await dispatch(
+          removeProductWishListAPI({ userId, productId: id })
+        ).unwrap();
+
+        // Cập nhật lại danh sách từ Redux sau khi xoá
         dispatch(handleGetAllWishListAPI(userId));
       }
     } catch (error) {

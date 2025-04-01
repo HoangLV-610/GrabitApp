@@ -19,6 +19,7 @@ import {
 } from "firebase/firestore";
 import { showToast } from "../utils/toast";
 import { updateUser } from "../redux/slice/user.slice";
+import { data } from "autoprefixer";
 
 // đăng nhập bằng facebook
 export const handleFacebookLogin = async () => {
@@ -246,7 +247,7 @@ export const getAllBlogs = async () => {
 export const addProductWishList = async (userId, productId) => {
   try {
     if (!userId) {
-      showToast("Vui lòng đăng nhập", "success");
+      showToast("Vui lòng đăng nhập", "warning");
       return;
     }
     const addProduct = await addDoc(collection(db, "wishList"), {
@@ -297,8 +298,6 @@ export const getItemWishList = async (userId) => {
 
 // lấy tất cả danh sách wishlist
 export const getAllWishList = async (userId) => {
-  console.log(userId);
-
   try {
     const q = query(collection(db, "wishList"), where("userId", "==", userId));
     const snapshot = await getDocs(q);
@@ -338,6 +337,88 @@ export const removeProductWishList = async (userId, productId) => {
     showToast("Đã xoá khỏi wishlist", "success");
   } catch (error) {
     console.log("Lỗi khi xoá sản phẩm khỏi wishlist:", error);
+    showToast("Xoá sản phẩm thất bại", "error");
+  }
+};
+
+// lấy ra tất cả sản phẩm trong giỏ hàng
+export const getAllProductInCart = async (userId) => {
+  try {
+    const q = query(collection(db, "cart"), where("userId", "==", userId));
+
+    const snapshot = await getDocs(q);
+    if (snapshot.empty) {
+      console.log("Không có sản phẩm nào trong giỏ hàng");
+      return [];
+    }
+
+    const dataProduct = [];
+
+    for (const cartDoc of snapshot.docs) {
+      const productId = cartDoc.data().productId;
+      console.log("productId từ giỏ hàng:", productId); // Log giá trị của productId
+
+      const productRef = query(
+        collection(db, "products"),
+        where("uid", "==", productId)
+      );
+      const productSnapshot = await getDocs(productRef);
+
+      console.log("productSnapshot:", productSnapshot.docs); // Log kết quả truy vấn
+    }
+
+    const dataCart = snapshot.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+
+    return dataCart;
+  } catch (error) {
+    console.log("Có lỗi khi lấy danh sách giỏ hàng", error);
+  }
+};
+
+// thêm sản phẩm vào giỏ hàng
+export const addProductToCart = async (userId, productId) => {
+  try {
+    if (!userId) {
+      showToast("Vui lòng đăng nhập", "warning");
+      return;
+    }
+
+    const addProductToCart = await addDoc(collection(db, "cart"), {
+      userId,
+      productId,
+      addedAt: new Date(),
+    });
+
+    if (addProductToCart) {
+      showToast("Thêm vào giỏ hàng thành công", "success");
+      return addProductToCart;
+    }
+  } catch (error) {
+    showToast("Thêm vào giỏ hàng thất bại", "error");
+    console.log("Không thêm được sản phẩm vào cart", error);
+  }
+};
+
+// Xoá item của cart
+export const removeProductToCart = async (userId, productId) => {
+  try {
+    const q = query(
+      collection(db, "cart"),
+      where("userId", "==", userId),
+      where("productId", "==", productId)
+    );
+    const snapshot = await getDocs(q);
+
+    snapshot.forEach(async (doc) => {
+      await deleteDoc(doc.ref);
+    });
+
+    showToast("Đã xoá khỏi cart", "success");
+  } catch (error) {
+    console.log("Lỗi khi xoá sản phẩm khỏi cart:", error);
     showToast("Xoá sản phẩm thất bại", "error");
   }
 };

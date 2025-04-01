@@ -4,6 +4,7 @@ import {
   getAllWishList,
   removeProductWishList,
 } from "../../services/AuthService";
+import { hideLoading, showLoading } from "./loading.slice";
 
 const initialState = {
   arrWishList: [],
@@ -23,26 +24,50 @@ export const handleGetAllWishListAPI = createAsyncThunk(
 );
 
 // Thêm sản phẩm vào wishlist
+
 export const handleAddWishListAPI = createAsyncThunk(
   "productWishList/handleAddWishListAPI",
-  async ({ userId, productId }, { dispatch }) => {
-    await addProductWishList(userId, productId);
-    dispatch(handleGetAllWishListAPI()); // Cập nhật Redux sau khi thêm
+  async ({ userId, productId }, { getState, dispatch }) => {
+    try {
+      dispatch(showLoading()); // Bật loading
+
+      await addProductWishList(userId, productId);
+
+      // Lấy danh sách cũ từ Redux
+      const prevWishList = getState().productWishList.arrWishList || [];
+
+      const newWishList = prevWishList.filter(
+        (item) => item.productId !== productId
+      );
+      return newWishList;
+    } catch (error) {
+      console.log("Lỗi khi thêm vào wishlist:", error);
+    } finally {
+      dispatch(hideLoading()); // Tắt loading sau khi hoàn tất
+    }
   }
 );
 
 // Xoá sản phẩm trog bảng wishlist
 export const removeProductWishListAPI = createAsyncThunk(
   "productWishList/removeProductWishListAPI",
-  async ({ userId, productId }, { getState }) => {
-    await removeProductWishList(userId, productId);
 
-    // Cập nhật Redux trực tiếp, không gọi lại API
-    const newWishList = getState().productWishList.arrWishList.filter(
-      (item) => item.productId !== productId
-    );
+  async ({ userId, productId }, { getState, dispatch }) => {
+    try {
+      dispatch(showLoading()); // Bật loading
+      await removeProductWishList(userId, productId);
 
-    return newWishList;
+      // Lấy danh sách cũ từ Redux
+      const prevWishList = getState().productWishList.arrWishList || [];
+      const newWishList = prevWishList.filter(
+        (item) => item.productId !== productId
+      );
+      return newWishList;
+    } catch (error) {
+      console.log("Lỗi khi xoá vào wishlist:", error);
+    } finally {
+      dispatch(hideLoading()); // Tắt loading sau khi hoàn tất
+    }
   }
 );
 
@@ -58,6 +83,9 @@ const productWishList = createSlice({
         return acc;
       }, {});
       state.wishlistObject = mappedData;
+    });
+    builder.addCase(handleAddWishListAPI.fulfilled, (state, action) => {
+      state.arrWishList = action.payload;
     });
     builder.addCase(removeProductWishListAPI.fulfilled, (state, action) => {
       state.arrWishList = action.payload;

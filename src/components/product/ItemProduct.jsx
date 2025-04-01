@@ -9,18 +9,27 @@ import {
   removeProductWishListAPI,
 } from "../../redux/slice/productWishList.slice";
 import { useEffect, useState } from "react";
+import {
+  handleAddProductToCartAPI,
+  handleGetAllProductToCartAPI,
+  handleRemoveProductToCartAPI,
+} from "../../redux/slice/cart.slice";
 
 const ItemProduct = (props) => {
   const { product } = props;
   const [isInWishlist, setIsInWishlist] = useState(false);
+  const [isInCart, setIsInCart] = useState(false);
   const userId = useUserId();
   const dispatch = useDispatch();
 
   // Lấy danh sách Wishlist từ Redux
   const { wishlistObject } = useSelector((state) => state.productWishList);
+  const { cartObject } = useSelector((state) => state.cartSlice);
 
+  // lấy ra những item nào đã yêu thích và đã thêm vào cart
   useEffect(() => {
     setIsInWishlist(!!wishlistObject[product.id]);
+    setIsInCart(!!cartObject[product.id]);
   }, [wishlistObject, product]);
 
   // Xử lý thêm/xóa Wishlist
@@ -32,7 +41,6 @@ const ItemProduct = (props) => {
     }
 
     const isAlreadyInWishlist = wishlistObject[product.id];
-
     try {
       if (isAlreadyInWishlist) {
         await dispatch(
@@ -50,6 +58,38 @@ const ItemProduct = (props) => {
         // Cập nhật lại danh sách từ Redux sau khi thêm
         dispatch(handleGetAllWishListAPI(userId));
         setIsInWishlist(true);
+      }
+    } catch (error) {
+      console.log("Lỗi xử lý wishlist:", error);
+    }
+  };
+
+  // Xử lý thêm/xóa Cart
+  const handleAddProductToCart = async (event) => {
+    event.stopPropagation();
+    if (!userId) {
+      showToast("Vui lòng đăng nhập", "error");
+      return;
+    }
+
+    const isAlreadyInCart = cartObject[product.id];
+    try {
+      if (isAlreadyInCart) {
+        await dispatch(
+          handleRemoveProductToCartAPI({ userId, productId: product.id })
+        ).unwrap();
+
+        // Cập nhật lại danh sách từ Redux sau khi xoá
+        dispatch(handleGetAllProductToCartAPI(userId));
+        setIsInCart(false);
+      } else {
+        await dispatch(
+          handleAddProductToCartAPI({ userId, productId: product.id })
+        ).unwrap();
+
+        // Cập nhật lại danh sách từ Redux sau khi thêm
+        dispatch(handleGetAllProductToCartAPI(userId));
+        setIsInCart(true);
       }
     } catch (error) {
       console.log("Lỗi xử lý wishlist:", error);
@@ -110,11 +150,18 @@ const ItemProduct = (props) => {
               className="text-gray group-hover/actions:text-white transition duration-300"
             />
           </button>
-          <button className="group/actions p-[4px] border border-light-gray rounded-[5px] group hover:bg-main transition duration-300">
+          <button
+            onClick={(e) => handleAddProductToCart(e)}
+            className={`group/actions p-[4px] border border-light-gray rounded-[5px] transition duration-300 ${
+              isInCart ? "bg-main" : "hover:bg-main"
+            }`}
+          >
             <ShoppingBasketIcon
               size={16}
               strokeWidth={1}
-              className="text-gray group-hover/actions:text-white transition duration-300"
+              className={`text-gray transition duration-300 ${
+                isInCart ? "text-white" : "group-hover/actions:text-white"
+              }`}
             />
           </button>
         </div>

@@ -1,17 +1,30 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { toggleDraw } from "../../../../redux/slice/cart.slice";
 
 const ItemActionHeader = (props) => {
+  const dispatch = useDispatch();
   const { icon, title, subTitle, content, to, wishList, typeButton } =
     props.action;
   const navigate = useNavigate();
 
-  const handleButton = () => {
+  const handleShowWishlist = () => {
     navigate(to, { state: wishList });
+  };
+
+  const handleShowCart = () => {
+    dispatch(toggleDraw());
   };
   return (
     <button
-      onClick={typeButton == "wishlist" ? handleButton : null}
+      onClick={
+        typeButton == "wishlist"
+          ? handleShowWishlist
+          : typeButton == "cart"
+          ? handleShowCart
+          : null
+      }
       className="relative group "
     >
       {/* Wrapper chính */}

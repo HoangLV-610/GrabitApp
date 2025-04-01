@@ -26,6 +26,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../../../redux/slice/user.slice";
 import { showToast } from "../../../../utils/toast";
 import { handleGetAllWishListAPI } from "../../../../redux/slice/productWishList.slice";
+import {
+  handleGetAllProductToCartAPI,
+  toggleDraw,
+} from "../../../../redux/slice/cart.slice";
+import Cart from "../../../../pages/Cart";
 
 // DATA DROPDOWN
 const listContent = [
@@ -103,7 +108,7 @@ const contentAction = (user, handleLogout) => {
             className="text-gray hover:text-main "
             to={item.link}
             state={item.state}
-            // onClick={item.onClick ? () => item.onClick() : undefined}
+            onClick={item.onClick ? () => item.onClick() : undefined}
           >
             {item.title}
           </Link>
@@ -149,10 +154,13 @@ const Header = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.userSlice.user);
   const wishList = useSelector((state) => state.productWishList.arrWishList);
+  const { arrCart, isDrawVisiable } = useSelector((state) => state.cartSlice);
+
+  console.log(isDrawVisiable);
 
   useEffect(() => {
-    dispatch(handleGetAllWishListAPI(user.id));
-    console.log(wishList);
+    dispatch(handleGetAllWishListAPI(user.userId));
+    dispatch(handleGetAllProductToCartAPI(user.userId));
   }, [dispatch]);
 
   const handleLogout = () => {
@@ -178,7 +186,8 @@ const Header = () => {
     {
       icon: <ShoppingCart size={24} />,
       title: "Cart",
-      subTitle: "3-ITEMS",
+      subTitle: `${arrCart.length}-ITEMS`,
+      typeButton: "cart",
     },
   ];
 
@@ -347,6 +356,8 @@ const Header = () => {
               return <ItemActionHeader key={index} action={action} />;
             })}
           </div>
+
+          <Cart isDrawVisiable={isDrawVisiable} />
         </div>
 
         <div className="header-cart w-full py-[5px] border-b border-light-gray border-t">
